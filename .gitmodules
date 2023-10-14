@@ -4,3 +4,6 @@
 [submodule "hash/cpu/src/HorizenLabs-poseidon2"]
 	path = hash/cpu/src/HorizenLabs-poseidon2
 	url = https://github.com/HorizenLabs/poseidon2
+[submodule "hash/cpu/src/constantine"]
+	path = hash/cpu/src/constantine
+	url = https://github.com/mratsim/constantine/
