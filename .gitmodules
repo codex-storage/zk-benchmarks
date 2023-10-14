@@ -1,0 +1,6 @@
+[submodule "hash/cpu/src/zikkurat-algebra"]
+	path = hash/cpu/src/zikkurat-algebra
+	url = https://github.com/faulhornlabs/zikkurat-algebra
+[submodule "hash/cpu/src/HorizenLabs-poseidon2"]
+	path = hash/cpu/src/HorizenLabs-poseidon2
+	url = https://github.com/HorizenLabs/poseidon2
