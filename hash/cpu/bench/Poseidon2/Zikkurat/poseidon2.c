@@ -396,13 +396,6 @@ int main( int argc, char *argv[] ) {
 
   switch(argc) {
 
-    case 1:
-      printf("usage:\n");
-      printf("$ poseidon2 <merkle_depth>:\n");
-      printf("$ poseidon2 <merkle_depth> <nthreads>:\n");
-      exit(-1);
-      break;
-
     case 2:
       mtDepth  = atoi(argv[1]);
       break;
@@ -410,6 +403,13 @@ int main( int argc, char *argv[] ) {
     case 3:
       mtDepth  = atoi(argv[1]);
       nThreads = atoi(argv[2]);
+      break;
+
+    default:
+      printf("usage:\n");
+      printf("$ poseidon2 <merkle_depth>:\n");
+      printf("$ poseidon2 <merkle_depth> <nthreads>:\n");
+      exit(-1);
       break;
   }
 
