@@ -7,3 +7,6 @@
 [submodule "hash/cpu/src/constantine"]
 	path = hash/cpu/src/constantine
 	url = https://github.com/mratsim/constantine/
+[submodule "hash/cpu/src/Blake3"]
+	path = hash/cpu/src/Blake3
+	url = https://github.com/BLAKE3-team/BLAKE3
