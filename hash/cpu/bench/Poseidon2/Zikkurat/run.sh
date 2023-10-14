@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./a.out $ZKBENCH_TREE_DEPTH $ZKBENCH_NTHREADS
