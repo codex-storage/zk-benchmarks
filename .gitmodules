@@ -10,3 +10,6 @@
 [submodule "hash/cpu/src/Blake3"]
 	path = hash/cpu/src/Blake3
 	url = https://github.com/BLAKE3-team/BLAKE3
+[submodule "hash/snark/src/hash-circuits"]
+	path = hash/snark/external/hash-circuits
+	url = https://github.com/faulhornlabs/hash-circuits
