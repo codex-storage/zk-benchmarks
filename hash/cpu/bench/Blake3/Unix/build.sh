@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ORIG=`pwd`
-cd ../../src/Blake3/
+cd ../../../src/Blake3/
 IMPL=`pwd`
 
 cd $IMPL
@@ -11,7 +11,10 @@ cd $IMPL/b3sum
 cargo build --release
 
 cd $ORIG
-cp $IMPL/b3sum/target/release/b3sum .
 
-gcc -O3 fakedata.c -o fakedata
+mkdir -p build
+
+cp $IMPL/b3sum/target/release/b3sum build/
+
+gcc -O3 fakedata.c -o build/fakedata
 
