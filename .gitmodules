@@ -1,14 +1,14 @@
 [submodule "hash/cpu/src/zikkurat-algebra"]
-	path = hash/cpu/src/zikkurat-algebra
+	path = hash/cpu/external/zikkurat-algebra
 	url = https://github.com/faulhornlabs/zikkurat-algebra
 [submodule "hash/cpu/src/HorizenLabs-poseidon2"]
-	path = hash/cpu/src/HorizenLabs-poseidon2
+	path = hash/cpu/external/HorizenLabs-poseidon2
 	url = https://github.com/HorizenLabs/poseidon2
 [submodule "hash/cpu/src/constantine"]
-	path = hash/cpu/src/constantine
+	path = hash/cpu/external/constantine
 	url = https://github.com/mratsim/constantine/
 [submodule "hash/cpu/src/Blake3"]
-	path = hash/cpu/src/Blake3
+	path = hash/cpu/external/Blake3
 	url = https://github.com/BLAKE3-team/BLAKE3
 [submodule "hash/snark/src/hash-circuits"]
 	path = hash/snark/external/hash-circuits

@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "build"
 
-ZIK_PATH="../../../src/zikkurat-algebra/"
+ZIK_PATH="../../../external/zikkurat-algebra/"
 
 mkdir -p build
 

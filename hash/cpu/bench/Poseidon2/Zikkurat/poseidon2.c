@@ -23,8 +23,8 @@ gcc -O3 \
 #include <assert.h>
 #include <pthread.h>
 
-#include "../../../src/zikkurat-algebra/lib/cbits/curves/fields/std/bn128_r_std.h"
-#include "../../../src/zikkurat-algebra/lib/cbits/curves/fields/mont/bn128_r_mont.h"
+#include "../../../external/zikkurat-algebra/lib/cbits/curves/fields/std/bn128_r_std.h"
+#include "../../../external/zikkurat-algebra/lib/cbits/curves/fields/mont/bn128_r_mont.h"
 
 #define NLIMBS 4
 

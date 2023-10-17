@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ORIG=`pwd`
-cd ../../../src/Blake3/
+cd ../../../external/Blake3/
 IMPL=`pwd`
 
 cd $IMPL
