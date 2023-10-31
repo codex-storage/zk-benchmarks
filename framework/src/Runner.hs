@@ -26,40 +26,7 @@ import System.Process
 import "time" Data.Time.Clock
 import "time" Data.Time.Clock.System
 
---------------------------------------------------------------------------------
-
-quote :: String -> String
-quote str = "`" ++ str ++ "`"
-
---------------------------------------------------------------------------------
-
-data Phase
-  = Build
-  | Setup
-  | Witness
-  | Run
-  deriving (Eq,Ord,Show)
-
-phaseBaseName :: Phase -> FilePath
-phaseBaseName phase = case phase of
-  Build   -> "build"  
-  Setup   -> "setup"  
-  Witness -> "witness"    
-  Run     -> "run"
-
-parsePhase :: String -> Maybe Phase
-parsePhase str = case map toLower str of
-  "build"   -> Just Build       
-  "setup"   -> Just Setup       
-  "witness" -> Just Witness         
-  "run"     -> Just Run     
-  _         -> Nothing
-
-phaseScript :: Phase -> FilePath
-phaseScript phase = phaseBaseName phase <.> "sh"
-
-phaseLockFile :: Phase -> FilePath
-phaseLockFile phase = phaseBaseName phase <.> "lock"
+import Types
 
 --------------------------------------------------------------------------------
 
@@ -67,48 +34,6 @@ createLockFile :: FilePath -> IO ()
 createLockFile fpath = do
   h <- openBinaryFile fpath WriteMode 
   hClose h
-
---------------------------------------------------------------------------------
-
-newtype Params 
-  = MkParams (Map String String)
-  deriving (Eq,Show)
-
-mkParams :: [(String,String)] -> Params
-mkParams list = MkParams (Map.fromList list)
-
-extendEnvWithParams :: Params -> [(String,String)] -> [(String,String)]
-extendEnvWithParams (MkParams table) oldEnv = newEnv ++ filteredOld where
-  filteredOld = filter (\pair -> not (fst pair `elem` newKeys)) oldEnv
-  newKeys = map fst newEnv
-  newEnv = [ ("ZKBENCH_" ++ key, value) | (key,value) <- Map.toList table ]
-
---------------------------------------------------------------------------------
-
-newtype Seconds a
-  = MkSeconds a
-  deriving (Eq,Ord,Show)
-
-fromSeconds :: Seconds a -> a
-fromSeconds (MkSeconds x) = x
-
---------------------------------------------------------------------------------
-
-data Benchmark = MkBenchmark
-  { _benchDir        :: FilePath
-  , _benchTimeout    :: Seconds Int
-  , _benchRerunFrom  :: Phase 
-  , _benchPhases     :: [Phase]
-  , _benchParams     :: Params
-  }
-  deriving Show
-
-data Result = MkResult
-  { _resParams  :: !Params
-  , _resPhase   :: !Phase  
-  , _resAvgTime :: !(Seconds Double)
-  }
-  deriving Show
 
 --------------------------------------------------------------------------------
 
