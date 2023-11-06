@@ -1,0 +1,49 @@
+pragma circom 2.0.0;
+
+include "../../../external/hash-circuits/circuits/poseidon2/poseidon2_hash.circom";
+include "../../../external/hash-circuits/circuits/poseidon2/poseidon2_merkle.circom";
+
+//------------------------------------------------------------------------------
+
+// sponge with rate=1 (capacity=2)
+template Bench_hash_sponge_rate1(n) {
+  signal input  inp[n];
+  signal output out;
+  component sponge = PoseidonSponge(3,2,n,1);
+  sponge.inp    <== inp;
+  sponge.out[0] ==> out;
+}
+
+// sponge with rate=2 (capacity=1)
+template Bench_hash_sponge_rate2(n) {
+  signal input  inp[n];
+  signal output out;
+  component sponge = PoseidonSponge(3,1,n,1);
+  sponge.inp    <== inp;
+  sponge.out[0] ==> out;
+}
+
+//------------------------------------------------------------------------------
+
+function FloorLog2(n) {
+  return (n==0) ? -1 : (1 + FloorLog2(n>>1));
+}
+
+function CeilLog2(n) {
+  return (n==0) ? 0 : (1 + FloorLog2(n-1));
+}
+
+template Bench_hash_merkle2(n) {
+  var log2n = CeilLog2(n);
+  assert( (1<<log2n) == n );    // for now this only works for power-of-two sized inputs 
+
+  signal input  inp[n];
+  signal output out;
+  component merkle = PoseidonMerkle(log2n);
+  merkle.inp      <== inp;
+  merkle.out_root ==> out;
+}
+
+//------------------------------------------------------------------------------
+
+component main {public [inp]} = Bench_ZKBENCH_WHICH( ZKBENCH_INPUT_SIZE );
