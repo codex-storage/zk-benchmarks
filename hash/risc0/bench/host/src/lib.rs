@@ -37,35 +37,10 @@ pub fn sha_bench(input: Vec<u8>) {
     // println!("output: {:?}", _output);
     // Optional: Verify receipt to confirm that recipients will also be able to
     // verify your receipt
-    // receipt.verify(METHOD_ID).unwrap();
+    receipt.verify(METHOD_ID).unwrap();
 }
 
+#[allow(dead_code)]
 fn main() {
     sha_bench(vec![97, 98, 99, 100, 101, 102, 103, 104]);
 }
-
-// #[cfg(test)]
-// mod benches {
-//     extern crate criterion;
-
-//     use criterion::{black_box, criterion_group, criterion_main, Criterion};
-//     use crate::main as your_function_to_benchmark;
-//     // Your benchmark function
-
-//     fn my_benchmark(c: &mut Criterion) {
-//         c.bench_function("my_function", |b| {
-//             b.iter(|| {
-//                 // Code to benchmark
-//                 let result = your_function_to_benchmark();
-//                 black_box(result);
-//             });
-//         });
-//     }
-
-//     // Define other benchmark functions here
-
-//     criterion_group!(benches, my_benchmark);
-//     criterion_main!(benches);
-// }
-
-
