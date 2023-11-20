@@ -21,9 +21,4 @@ pub fn sha_bench(input: Vec<u8>) {
     receipt.verify(METHOD_ID).unwrap();
 }
 
-#[allow(dead_code)]
-fn main() {
-    // This is a dummy call for the sha256 execution.
-    // Benchmarking does not depend on this. 
-    sha_bench(vec![97, 98, 99, 100, 101, 102, 103, 104]);
-}
+
