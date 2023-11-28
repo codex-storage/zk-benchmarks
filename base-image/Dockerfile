@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "--rcfile", "/root/.bashrc", "-lc"]
 # === install some basic tools and libs ===
 
 RUN apt-get -y update && \
-    apt-get -y install curl wget vim less build-essential git             \        
+    apt-get -y install curl wget vim less build-essential git             \
                        libgmp-dev zlib1g zlib1g-dev pkg-config libffi-dev \
                        libdigest-sha3-perl
 
@@ -85,12 +85,10 @@ RUN cd /tmp && \
     BOOTSTRAP_HASKELL_NONINTERACTIVE=1 sh ./install_ghcup && \
     source /root/.ghcup/env && \
     echo -e "\nsource /root/.ghcup/env" >>$HOME/.bashrc && \
-    ghcup --version >/zk/versions/ghcup.txt 
+    ghcup --version >/zk/versions/ghcup.txt  && \
+    rm /tmp/install_ghcup       
 
 RUN source /root/.ghcup/env && \
-    ghc   --version >/zk/versions/ghc.txt   && \
-    cabal --version >/zk/versions/cabal.txt && \
-    rm /tmp/install_ghcup       && \
     ghcup upgrade               && \
     ghcup install cabal 2.4.1.0 && \
     ghcup set     cabal 2.4.1.0 && \
