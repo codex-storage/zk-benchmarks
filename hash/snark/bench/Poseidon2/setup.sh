@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ -z ${ZKBENCH_WHICH} ]; then 
-ZKBENCH_WHICH="hash_sponge"
-fi
+# if [ -z ${ZKBENCH_WHICH} ]; then 
+# ZKBENCH_WHICH="hash_sponge_rate1"
+# fi
 
 ORIG=`pwd`
 ROOT="${ORIG}/../../../../"
@@ -10,7 +10,7 @@ ROOT="${ORIG}/../../../../"
 cd build
 
 echo "circuit-specific ceremony..."
-NAME="${ZKBENCH_WHICH}"
+NAME="hash"
 snarkjs groth16 setup ${NAME}.r1cs ${ROOT}/ceremony/ceremony.ptau ${NAME}_0000.zkey
 echo "some_entropy" | snarkjs zkey contribute ${NAME}_0000.zkey ${NAME}_0001.zkey --name="1st Contributor Name"
 rm ${NAME}_0000.zkey

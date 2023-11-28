@@ -5,7 +5,7 @@ ZKBENCH_INPUT_SIZE=256
 fi
 
 if [ -z ${ZKBENCH_WHICH} ]; then 
-ZKBENCH_WHICH="hash_sponge"
+ZKBENCH_WHICH="hash_sponge_rate1"
 fi
 
 ORIG=`pwd`
@@ -16,7 +16,7 @@ gcc -O3 generate_input.c -o build/generate_input || { echo "gcc failed"; exit 10
 
 #NAME=${ZKBENCH_WHICH}
 NAME="hash"
-echo ${NAME}.circom.template \
+cat ${NAME}.circom.template \
   | sed "s/ZKBENCH_INPUT_SIZE/${ZKBENCH_INPUT_SIZE}/g" \
   | sed "s/ZKBENCH_WHICH/${ZKBENCH_WHICH}/g"           \
   >build/${NAME}.circom
