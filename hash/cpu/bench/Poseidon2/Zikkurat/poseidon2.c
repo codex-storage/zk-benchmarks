@@ -6,6 +6,7 @@ Poseidon2 arithmetic hash function, specialized to the BN128 scalar field and t=
 compile with: 
 
 gcc -O3 \
+  -I ../lib/cbits/                    \
   -I ../lib/cbits/bigint/             \
   -I ../lib/cbits/curves/fields/std/  \
   -I ../lib/cbits/curves/fields/mont/ \
