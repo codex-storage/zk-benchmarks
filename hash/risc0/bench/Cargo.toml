@@ -1,6 +1,13 @@
+[package]
+name = "benchmark"
+version = "0.1.0"
+edition = "2021"
+
 [workspace]
-resolver = "2"
-members = ["host", "methods"]
+members = ["methods"]
+
+[workspace.dependencies]
+methods = { path = "methods" }
 
 # Always optimize; building and running the guest takes much longer without optimization.
 [profile.dev]
@@ -15,3 +22,9 @@ lto = true
 
 [profile.release.build-override]
 opt-level = 3
+
+[dependencies]
+risc0-zkvm = { version = "0.19.0" }
+serde = "1.0"
+rand = "0.8.3"
+methods = { workspace = true }

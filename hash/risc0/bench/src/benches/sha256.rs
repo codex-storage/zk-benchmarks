@@ -1,16 +1,10 @@
 use methods::{
-    METHOD_ELF, METHOD_ID
+    SHA256_ELF, SHA256_ID
 };
 use risc0_zkvm::{default_prover, ExecutorEnv};
 use risc0_zkvm::{ sha};
 // use rand::RngCore;
-use rand::Rng;
 use std::time::Instant;
-
-fn generate_bytes(size: usize) -> Vec<u8> {
-    let mut rng = rand::thread_rng();
-    (0..size).map(|_| rng.gen()).collect()
-}
 
 pub fn sha_bench(input: Vec<u8>) {
    
@@ -22,7 +16,7 @@ pub fn sha_bench(input: Vec<u8>) {
     let prover = default_prover();
 
     // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove_elf(env, METHOD_ELF).unwrap();
+    let receipt = prover.prove_elf(env, SHA256_ELF).unwrap();
 
     // TODO: Implement code for retrieving receipt journal here.
 
@@ -30,18 +24,8 @@ pub fn sha_bench(input: Vec<u8>) {
     let _output: sha::Digest = receipt.journal.decode().unwrap();
    
     // verify your receipt
-    receipt.verify(METHOD_ID).unwrap();
+    receipt.verify(SHA256_ID).unwrap();
 
     let elapsed_time = start_time.elapsed();
     eprintln!("Total time: {:?}", elapsed_time);
-}
-
-fn main() {
-    let args: Vec<String> = std::env::args().collect();
-    eprintln!("{:?}", &args[1]);
-    // eprintln!("{:?}", &args[2]);
-    let size_kb = args[1].parse::<usize>().unwrap();
-    eprintln!("{:?}", size_kb);
-    let input = generate_bytes(size_kb);
-    sha_bench(input);
 }
