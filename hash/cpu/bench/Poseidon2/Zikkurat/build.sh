@@ -6,6 +6,7 @@ ZIK_PATH="../../../external/zikkurat-algebra/"
 mkdir -p build
 
 gcc -O3 \
+  -I ${ZIK_PATH}/lib/cbits/                    \
   -I ${ZIK_PATH}/lib/cbits/bigint/             \
   -I ${ZIK_PATH}/lib/cbits/curves/fields/std/  \
   -I ${ZIK_PATH}/lib/cbits/curves/fields/mont/ \

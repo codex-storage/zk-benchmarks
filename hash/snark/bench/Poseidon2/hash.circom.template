@@ -33,7 +33,7 @@ function CeilLog2(n) {
   return (n==0) ? 0 : (1 + FloorLog2(n-1));
 }
 
-template Bench_hash_merkle2(n) {
+template Bench_hash_merkle(n) {
   var log2n = CeilLog2(n);
   assert( (1<<log2n) == n );    // for now this only works for power-of-two sized inputs 
 

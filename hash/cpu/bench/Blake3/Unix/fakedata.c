@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void generate(megabytes) {
+void generate(int megabytes) {
   
   unsigned char buffer[257];
   for(int i=0;i<256;i++) { buffer[i] = 1+(i%255); }
