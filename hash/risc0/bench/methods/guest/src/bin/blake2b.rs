@@ -1,15 +1,15 @@
 #![no_main]
 
 use risc0_zkvm::{guest::env, sha::Digest};
-use sha3::{Digest as _, Keccak256};
+use risc0_zkp::core::hash::blake2b::{Blake2b, Blake2bCpuImpl};
 
 risc0_zkvm::guest::entry!(main);
 
 pub fn main() {
 
     let data: Vec<u8> = env::read();
-    let hash: [u8;32] = Keccak256::digest(data).into();
-    let digest  = Digest::try_from(hash).unwrap();
+    let hash = Blake2bCpuImpl::blake2b(&data);
+    let digest: Digest = hash.into();
     env::commit(&digest)
 
 }

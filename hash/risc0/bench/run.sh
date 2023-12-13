@@ -1,10 +1,25 @@
 #!/bin/bash
+if [ -z ${ZKBENCH_HASH_TYPE} ]; then 
+ZKBENCH_HASH_TYPE="sha256"    
+fi
 
-# Set a default value if ZKBENCH_INPUT_SIZE_KB is not set
-: ${ZKBENCH_INPUT_SIZE_KB:=1024}
+if [ -z ${ZKBENCH_WHICH} ]; then 
+ZKBENCH_WHICH="LINEAR"    
+fi
 
-# Set a default value if ZKBENCH_INPUT_SIZE_KB is not set
-: ${WHICH:="all"}
+if [ -z ${ZKBENCH_NTHREADS} ]; then 
+ZKBENCH_NTHREADS=1    
+fi
 
-# Run cargo run with the specified environment variable
-cargo run $WHICH $ZKBENCH_INPUT_SIZE_KB
+if [ -z ${ZKBENCH_INPUT_SIZE_KB} ]; then 
+ZKBENCH_INPUT_SIZE_KB=1024
+fi
+
+echo "Running benchmarks with the following configurations:"
+echo "HASH            = $ZKBENCH_HASH_TYPE"
+echo "WHICH           = $ZKBENCH_WHICH"
+echo "NTHREADS        = $ZKBENCH_NTHREADS"
+echo "Input Size (KB) = $ZKBENCH_INPUT_SIZE_KB"
+
+# Run the benchmarks using cargo run
+CARGO_BUILD_JOBS=$ZKBENCH_NTHREADS cargo run $ZKBENCH_HASH_TYPE $ZKBENCH_INPUT_SIZE_KB

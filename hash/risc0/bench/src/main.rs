@@ -1,6 +1,10 @@
 mod benches;
-use benches::sha256::sha_bench;
-use benches::keccak::keccak_bench;
+use benches::{
+    sha256::sha_bench,
+    keccak::keccak_bench,
+    blake2b::blake2b_bench,
+    blake3::blake3_bench,
+};
 use rand::Rng;
 
 
@@ -14,7 +18,7 @@ fn generate_bytes(size: usize) -> Vec<u8> {
 fn main() {
     let args: Vec<String> = std::env::args().collect();
 
-    let mut flag = 0;
+    // let mut flag = 0;
 
     let hash_type = &args[1];
     let size_kb = args[2].parse::<usize>().unwrap();
@@ -22,23 +26,30 @@ fn main() {
     eprintln!("data size(bytes): {:?}", size_kb);
     let input = generate_bytes(size_kb);
 
-    if hash_type == "all" || hash_type == "sha256" {
-        println!("SHA256 Benchmarking: ");
-        sha_bench(input.clone());
-        println!("");
-        flag = 1;
+    match hash_type.as_str() {
+        "sha256" => {
+            println!("SHA256 Benchmarking: ");
+            sha_bench(input.clone());
+        }
+        "keccak" => {
+            println!("KECCAK Benchmarking: ");
+            keccak_bench(input.clone());
+        }
+
+        "blake2b" => {
+            println!("Blake2b Benchmarking: ");
+            blake2b_bench(input.clone());
+        }
+
+        "blake3" => {
+            println!("Blake3 Benchmarking: ");
+            blake3_bench(input.clone());
+        }
+        _ => {
+            println!("Wrong Benchmark Name!");
+        }
     }
     
-    if hash_type == "all" || hash_type == "keccak" {
-        println!("KECCAK Benchmarking: ");
-        keccak_bench(input.clone());
-        println!("");
-        flag = 1;
-    }
-
-    if flag == 0 {
-        println!("Wrong Benchmarking Name");
-    }
     println!("All Done!");
     
 }
