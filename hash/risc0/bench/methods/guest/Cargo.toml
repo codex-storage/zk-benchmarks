@@ -14,3 +14,6 @@ risc0-zkp = "0.19.1"
 blake3 = "1.5.0"
 zkhash = { git = "https://github.com/HorizenLabs/poseidon2.git"}
 ark-serialize = "0.4"
+ark-ff = "0.4.2"
+risc0-core = "0.18.0"
+lazy_static = "1.4"

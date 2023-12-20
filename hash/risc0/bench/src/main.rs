@@ -9,7 +9,6 @@ use benches::{
 };
 use rand::Rng;
 
-
 fn generate_bytes(size: usize) -> Vec<u8> {
     let mut rng = rand::thread_rng();
     (0..size).map(|_| rng.gen()).collect()
@@ -19,9 +18,7 @@ fn generate_bytes(size: usize) -> Vec<u8> {
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
-
-    // let mut flag = 0;
-
+    
     let hash_type = &args[1];
     let size_kb = args[2].parse::<usize>().unwrap();
 
@@ -61,8 +58,8 @@ fn main() {
 
         "poseidon2_babybear" => {
             println!("Poseidon2 Benchmarking on the BabyBear field: ");
-            eprintln!("number of inputs {:?}", size_kb);
-            poseidon2_babybear_bench(size_kb);
+            eprintln!("number of inputs {:?}", 32);
+            poseidon2_babybear_bench();
         }
 
         _ => {

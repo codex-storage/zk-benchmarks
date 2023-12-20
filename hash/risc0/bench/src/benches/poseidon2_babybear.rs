@@ -3,8 +3,8 @@ use methods::{
     POSEIDON2_BABYBEAR_ELF, POSEIDON2_BABYBEAR_ID
 };
 use risc0_zkvm::{default_prover, ExecutorEnv};
-use zkhash::{fields::{babybear::FpBabyBear, utils::random_scalar}/* , poseidon2::poseidon2_instance_bn256::POSEIDON2_BN256_PARAMS*/};
-// use zkhash::poseidon2::poseidon2::Poseidon2;
+use zkhash::{fields::{babybear::FpBabyBear, utils::random_scalar} , poseidon2::poseidon2_instance_babybear::POSEIDON2_BABYBEAR_24_PARAMS};
+use zkhash::poseidon2::poseidon2::Poseidon2;
 // use std::convert::TryFrom;
 use std::time::Instant;
 // use zkhash::merkle_tree::merkle_tree_fp::MerkleTree;
@@ -13,13 +13,15 @@ use std::time::Instant;
 use ark_serialize::{CanonicalSerialize, CanonicalDeserialize};
 
 
-pub fn poseidon2_babybear_bench(mtDepth: usize) {
+pub fn poseidon2_babybear_bench() {
     
     type Scalar = FpBabyBear;
-
+    let permutation = Poseidon2::new(&POSEIDON2_BABYBEAR_24_PARAMS);
+    // let t = permutation.get_t();
+    let t = 32;
     let mut input_scalar: Vec<Vec<u8>> = Vec::new();
-    let number_of_leaves: u32 = 1 << mtDepth;
-    for _ in 0..number_of_leaves {
+
+    for _ in 0..t {
         let mut uncompressed_bytes = Vec::new();
         let a: Scalar = random_scalar();
         a.serialize_uncompressed(&mut uncompressed_bytes).unwrap();
