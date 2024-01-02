@@ -7,6 +7,7 @@ pub fn main() {
 
     let data: Vec<u8> = env::read();
     let hash = sha::Impl::hash_bytes(&data);
+    eprintln!("total cycle count for hashing: {:?}",env::get_cycle_count());
     env::commit(&hash)
 }
 

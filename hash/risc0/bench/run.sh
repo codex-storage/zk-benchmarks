@@ -28,7 +28,7 @@ echo "Input Size (KB) = $ZKBENCH_INPUT_SIZE_KB"
 
 # Run the benchmarks using cargo run
 # Check if the environment variable is set to "poseidon2_bn128"
-if [ "$ZKBENCH_HASH_TYPE" == "poseidon2_bn128" ]; then
+if [[ "$ZKBENCH_HASH_TYPE" == "poseidon2_bn128" || "$ZKBENCH_HASH_TYPE" == "poseidon2_babybear" ]]; then
     # echo "Running Poseidon2 benchmark over bn128 field"
     CARGO_BUILD_JOBS=$ZKBENCH_NTHREADS cargo run $ZKBENCH_HASH_TYPE $ZKBENCH_TREE_DEPTH
 else

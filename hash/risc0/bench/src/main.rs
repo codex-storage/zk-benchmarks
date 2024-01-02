@@ -58,8 +58,9 @@ fn main() {
 
         "poseidon2_babybear" => {
             println!("Poseidon2 Benchmarking on the BabyBear field: ");
-            eprintln!("number of inputs {:?}", 32);
-            poseidon2_babybear_bench();
+            eprintln!("Tree Depth: {:?}", size_kb);
+            eprintln!("number of inputs {:?}",  (1 << size_kb) * 8);
+            poseidon2_babybear_bench(size_kb);
         }
 
         _ => {
