@@ -485,8 +485,10 @@ dependencies = [
  "ark-serialize",
  "blake3",
  "lazy_static",
+ "rand",
  "risc0-core 0.18.0",
  "risc0-zkp",
+ "risc0-zkp-core",
  "risc0-zkvm",
  "sha2 0.10.6",
  "sha3",
@@ -746,6 +748,21 @@ dependencies = [
  "serde",
  "sha2 0.10.8",
  "tracing",
+]
+
+[[package]]
+name = "risc0-zkp-core"
+version = "0.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3dfd3bb0b4f2a4250d7332c3d647418502449e773b176552aae869537c4a96bf"
+dependencies = [
+ "anyhow",
+ "bytemuck",
+ "paste",
+ "rand",
+ "rand_core",
+ "serde",
+ "sha2 0.10.8",
 ]
 
 [[package]]

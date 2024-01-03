@@ -33,3 +33,4 @@ zkhash = { git = "https://github.com/HorizenLabs/poseidon2.git"}
 ark-ff = "0.4.2"
 hex = "0.4.3"
 ark-serialize = "0.4"
+risc0-core = "0.18.0"

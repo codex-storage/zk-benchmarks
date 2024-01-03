@@ -51,8 +51,7 @@ pub fn poseidon2_babybear_bench(mt_depth: usize) {
         output_deseralised.push(Scalar::deserialize_uncompressed(&**output.get(i).unwrap()).unwrap());
     }
 
-    eprintln!("size: {:?}", output_deseralised);
-    // let hash_final = FpBabyBear::deserialize_uncompressed(&*output).unwrap();
+    eprintln!("hash: {:?}", output_deseralised);
 
     // verify your receipt
     receipt.verify(POSEIDON2_BABYBEAR_ID).unwrap();

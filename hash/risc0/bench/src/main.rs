@@ -6,6 +6,7 @@ use benches::{
     blake3::blake3_bench,
     poseidon2_bn128::poseidon2_bn128_bench,
     poseidon2_babybear::poseidon2_babybear_bench,
+    poseidon2_babybear_native::poseidon2_babybear_native_bench,
 };
 use rand::Rng;
 
@@ -61,6 +62,13 @@ fn main() {
             eprintln!("Tree Depth: {:?}", size_kb);
             eprintln!("number of inputs {:?}",  (1 << size_kb) * 8);
             poseidon2_babybear_bench(size_kb);
+        }
+
+        "poseidon2_babybear_native" => {
+            println!("Poseidon2 Benchmarking on the BabyBear field: ");
+            eprintln!("Tree Depth: {:?}", size_kb);
+            eprintln!("number of inputs {:?}",  (1 << size_kb) * 8);
+            poseidon2_babybear_native_bench(size_kb);
         }
 
         _ => {
