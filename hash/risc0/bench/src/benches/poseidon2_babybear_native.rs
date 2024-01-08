@@ -8,7 +8,6 @@ use risc0_zkvm::{
     ExecutorEnv
 };
 use std::time::Instant;
-// use risc0_core::field::baby_bear::BabyBearElem;
 use rand::Rng;
 
 pub fn poseidon2_babybear_native_bench(mt_depth: usize) {
@@ -33,24 +32,16 @@ pub fn poseidon2_babybear_native_bench(mt_depth: usize) {
     let receipt = prover.prove_elf(env, POSEIDON2_BABYBEAR_NATIVE_ELF).unwrap();
     let elapsed_time = start_time.elapsed();
 
-    // For example:
-    let output: Vec<u32> = receipt.journal.decode().unwrap();
-
-    // let mut output_deseralised: Vec<Scalar> = Vec::new();
-
-    // for i in 0..output.len() {
-    //     output_deseralised.push(Scalar::deserialize_uncompressed(&**output.get(i).unwrap()).unwrap());
-    // }
-
-    eprintln!("hash: {:?}", output);
-    // let hash_final = FpBabyBear::deserialize_uncompressed(&*output).unwrap();
-
     // verify your receipt
     receipt.verify(POSEIDON2_BABYBEAR_NATIVE_ID).unwrap();
 
-    
-    eprintln!("Total time: {:?}", elapsed_time);
-    // eprintln!("Hash: {:?}", hash_final);
+    let elapsed_time2 = start_time.elapsed();
 
+    let output: Vec<u32> = receipt.journal.decode().unwrap();
+
+    eprintln!("hash: {:?}", output);
+    
+    eprintln!("Total time: {:?}", elapsed_time2);
+    eprintln!("Verification time: {:?}", elapsed_time2 - elapsed_time);
 
 }

@@ -30,16 +30,19 @@ pub fn poseidon2_bn128_bench(mt_depth: usize) {
     let receipt = prover.prove_elf(env, POSEIDON2_BN128_ELF).unwrap();
     let elapsed_time = start_time.elapsed();
 
+    
+    // verify your receipt
+    receipt.verify(POSEIDON2_BN128_ID).unwrap();
+
+    let elapsed_time2 = start_time.elapsed();
+
     // For example:
     let output: Vec<u8> = receipt.journal.decode().unwrap();
 
     let hash_final = Scalar::deserialize_uncompressed(&*output).unwrap();
 
-    // verify your receipt
-    receipt.verify(POSEIDON2_BN128_ID).unwrap();
-
-    
-    eprintln!("Total time: {:?}", elapsed_time);
     eprintln!("Hash: {:?}", hash_final);
+    eprintln!("Total time: {:?}", elapsed_time2);
+    eprintln!("Verification time: {:?}", elapsed_time2 - elapsed_time);
 
 }

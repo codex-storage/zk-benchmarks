@@ -3,34 +3,35 @@ use methods::{
 };
 use risc0_zkvm::{default_prover, ExecutorEnv};
 use risc0_zkvm::{ sha};
-// use sha2;
-// use rand::RngCore;
 use std::time::Instant;
-
+use hex::encode;
 pub fn sha_bench(input: Vec<u8>) {
    
-
     let env = ExecutorEnv::builder().write(&input).unwrap().build().unwrap();
 
     // Obtain the default prover.
     let prover = default_prover();
-    eprintln!("------risc0_zkvm sha hashing------");
+    eprintln!("\n------risc0_zkvm sha hashing------\n");
+
     let start_time = Instant::now();
     // Produce a receipt by proving the specified ELF binary.
     let receipt = prover.prove_elf(env, SHA256_ELF).unwrap();
     let elapsed_time = start_time.elapsed();
 
-    // For example:
-    let _output: sha::Digest = receipt.journal.decode().unwrap();
-
     // verify your receipt
     receipt.verify(SHA256_ID).unwrap();
 
-    eprintln!("Total time: {:?}", elapsed_time);
+    let elapsed_time2 = start_time.elapsed();
+
+    let _output: sha::Digest = receipt.journal.decode().unwrap();
+
+    eprintln!("Total time: {:?}", elapsed_time2);
+    eprintln!("Verification time: {:?}", elapsed_time2 - elapsed_time);
+
     eprintln!("Hash: {:?}", _output);
 
     let env = ExecutorEnv::builder().write(&input).unwrap().build().unwrap();
-    eprintln!("------RustCrypto sha hashing------");
+    eprintln!("\n------RustCrypto sha hashing(accelerated)------\n");
     // Obtain the default prover.
     let prover = default_prover();
 
@@ -39,12 +40,15 @@ pub fn sha_bench(input: Vec<u8>) {
     let receipt = prover.prove_elf(env, SHA256_ACCELERATED_ELF).unwrap();
     let elapsed_time = start_time.elapsed();
 
-    // For example:
-    let _output: [u8;32] = receipt.journal.decode().unwrap();
-
     // verify your receipt
     receipt.verify(SHA256_ACCELERATED_ID).unwrap();
 
-    eprintln!("Total time: {:?}", elapsed_time);
-    eprintln!("Hash: {:?}", _output);
+    let elapsed_time2 = start_time.elapsed();
+
+    let _output: [u8;32] = receipt.journal.decode().unwrap();
+    let hash = encode(_output);
+    eprintln!("Total time: {:?}", elapsed_time2);
+    eprintln!("Verification time: {:?}", elapsed_time2 - elapsed_time);
+
+    eprintln!("Hash: {:?}", hash);
 }
