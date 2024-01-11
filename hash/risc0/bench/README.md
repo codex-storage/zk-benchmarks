@@ -3,7 +3,7 @@ Benchmarking different hashes inside risc'0 zkvm
 
 The benchmark is defined by the following shell scripts:
 
-- `build.sh` - build the code. you can set the number of threads by setting the environment variable `CARGO_BUILD_JOBS` otherwise the code will build using default number of threads.
+- `build.sh` - build the code.
 
 - `run.sh` and `run2.sh` - run the benchmark itself (`run.sh` for sha256, keccak, blake2b, blake3 and `run2.sh` for poseidon2 over bn128 and babybear)
 
