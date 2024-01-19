@@ -1,4 +1,4 @@
-use methods::{
+use benchmark_methods::{
     BLAKE3_ELF, BLAKE3_ID
 };
 use risc0_zkvm::{default_prover, ExecutorEnv};
@@ -17,7 +17,7 @@ pub fn blake3_bench(input: Vec<u8>) {
     let start_time = Instant::now();
 
     // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove_elf(env, BLAKE3_ELF).unwrap();
+    let receipt = prover.prove(env, BLAKE3_ELF).unwrap();
 
     // For example:
     let _output: sha::Digest = receipt.journal.decode().unwrap();

@@ -1,4 +1,4 @@
-use methods::{
+use benchmark_methods::{
     BLAKE2B_ELF, BLAKE2B_ID
 };
 use risc0_zkvm::{default_prover, ExecutorEnv};
@@ -15,7 +15,7 @@ pub fn blake2b_bench(input: Vec<u8>) {
 
     let start_time = Instant::now();
     // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove_elf(env, BLAKE2B_ELF).unwrap();
+    let receipt = prover.prove(env, BLAKE2B_ELF).unwrap();
 
     // For example:
     let _output: sha::Digest = receipt.journal.decode().unwrap();

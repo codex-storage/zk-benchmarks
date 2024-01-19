@@ -1,4 +1,4 @@
-use methods::{
+use benchmark_methods::{
     KECCAK_ELF, KECCAK_ID
 };
 use risc0_zkvm::{default_prover, ExecutorEnv};
@@ -16,7 +16,7 @@ pub fn keccak_bench(input: Vec<u8>) {
     let prover = default_prover();
 
     // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove_elf(env, KECCAK_ELF).unwrap();
+    let receipt = prover.prove(env, KECCAK_ELF).unwrap();
 
     // For example:
     let _output: sha::Digest = receipt.journal.decode().unwrap();

@@ -6,6 +6,7 @@ use std::marker::PhantomData;
 use std::sync::Arc;
 use risc0_core::field::Elem;
 use lazy_static::lazy_static;
+use risc0_zkvm::guest::env::cycle_count;
 
 // This code is adapted from https://github.com/HorizenLabs/poseidon2/tree/main
 #[derive(Clone, Debug)]
@@ -1726,21 +1727,21 @@ pub fn main() {
 
     let data: Vec<u32> = env::read();
     
-    let cycles1 = env::get_cycle_count();
+    let cycles1 = cycle_count();
     let mut hash_data: Vec<BabyBearElem> = Vec::new();
     for i in 0..data.len() {
         let a_uncompressed = BabyBearElem::from(*data.get(i).unwrap());
         hash_data.push(a_uncompressed);
     }
-    let cycles2 = env::get_cycle_count();
+    let cycles2 = cycle_count();
     
 
     let permutation = Poseidon2::new(&POSEIDON2_BABYBEAR_24_PARAMS);
     let mut merkle_tree = MerkleTree::new(permutation.clone());
-    let cycles3 = env::get_cycle_count();
+    let cycles3 = cycle_count();
     let hash_final = merkle_tree.accumulate(&hash_data);
 
-    let cycles4 = env::get_cycle_count();
+    let cycles4 = cycle_count();
     
     let mut perm_seralised: Vec<u32> = Vec::new();
     for i in 0..8 {
@@ -1748,7 +1749,7 @@ pub fn main() {
         perm_seralised.push(temp);
 
     }
-    let cycles6 = env::get_cycle_count();
+    let cycles6 = cycle_count();
 
     env::commit(&perm_seralised);
 

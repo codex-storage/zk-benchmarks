@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use methods::{
+use benchmark_methods::{
     POSEIDON2_BABYBEAR_ELF, 
     POSEIDON2_BABYBEAR_ID
 };
@@ -39,7 +39,7 @@ pub fn poseidon2_babybear_bench(mt_depth: usize) {
 
     let start_time = Instant::now();
     // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove_elf(env, POSEIDON2_BABYBEAR_ELF).unwrap();
+    let receipt = prover.prove(env, POSEIDON2_BABYBEAR_ELF).unwrap();
     let elapsed_time = start_time.elapsed();
 
     // verify your receipt

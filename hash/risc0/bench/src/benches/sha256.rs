@@ -1,4 +1,4 @@
-use methods::{
+use benchmark_methods::{
     SHA256_ELF, SHA256_ID, SHA256_ACCELERATED_ELF, SHA256_ACCELERATED_ID
 };
 use risc0_zkvm::{default_prover, ExecutorEnv};
@@ -15,7 +15,7 @@ pub fn sha_bench(input: Vec<u8>) {
 
     let start_time = Instant::now();
     // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove_elf(env, SHA256_ELF).unwrap();
+    let receipt = prover.prove(env, SHA256_ELF).unwrap();
     let elapsed_time = start_time.elapsed();
 
     // verify your receipt
@@ -37,7 +37,7 @@ pub fn sha_bench(input: Vec<u8>) {
 
     let start_time = Instant::now();
     // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove_elf(env, SHA256_ACCELERATED_ELF).unwrap();
+    let receipt = prover.prove(env, SHA256_ACCELERATED_ELF).unwrap();
     let elapsed_time = start_time.elapsed();
 
     // verify your receipt
