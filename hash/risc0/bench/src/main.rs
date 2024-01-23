@@ -1,6 +1,7 @@
 mod benches;
 use benches::{
     sha256::sha_bench,
+    sha256_accelerated::sha_accelerated_bench,
     keccak::keccak_bench,
     blake2b::blake2b_bench,
     blake3::blake3_bench,
@@ -22,7 +23,7 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
 
     if args.len() != 3 {
-        println!("Wrong number of arguments");
+        println!("Wrong number of arguments! The program expects two arguments: <hash_type> and <size>");
         // Exit the program with a non-zero exit code
         process::exit(1);
     }
@@ -36,6 +37,12 @@ fn main() {
             eprintln!("data size(bytes): {:?}", size);
             let input = generate_bytes(size);
             sha_bench(input.clone());
+        }
+        "sha256_accelerated" => {
+            println!("Accelerated SHA256 Benchmarking: ");
+            eprintln!("data size(bytes): {:?}", size);
+            let input = generate_bytes(size);
+            sha_accelerated_bench(input.clone());
         }
         "keccak" => {
             println!("KECCAK Benchmarking: ");
