@@ -1,4 +1,5 @@
 pub mod sha256;
+pub mod sha256_accelerated;
 pub mod keccak;
 pub mod blake2b;
 pub mod blake3;
