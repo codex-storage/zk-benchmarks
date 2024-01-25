@@ -17,17 +17,32 @@ use inner_proof::sha_bench;
 use risc0_zkvm::{default_prover, ExecutorEnv};
 use risc0_zkvm::sha;
 use std::time::Instant;
+use std::process;
 
 fn main() {
     
-    let (hash_receipt, hash) = sha_bench(32);
+    let args: Vec<String> = std::env::args().collect();
 
+    if args.len() != 2 {
+        println!("Wrong number of arguments! The program expects one arguments: <size>");
+        // Exit the program with a non-zero exit code
+        process::exit(1);
+    }
+    
+    let data_size = args[1].parse::<usize>().unwrap();
+    
     let t0 = Instant::now();
+
+    let (hash_receipt, hash) = sha_bench(data_size.try_into().unwrap());
+    let (hash_receipt2, hash2) = sha_bench(data_size.try_into().unwrap());
 
     let env = ExecutorEnv::builder()
         // add_assumption makes the receipt to be verified available to the prover.
         .add_assumption(hash_receipt)
         .write(&hash)
+        .unwrap()
+        .add_assumption(hash_receipt2)
+        .write(&hash2)
         .unwrap()
         .build()
         .unwrap();

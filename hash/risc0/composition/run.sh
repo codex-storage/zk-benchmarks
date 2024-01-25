@@ -1,1 +1,1 @@
-./target/release/composition
+./target/release/composition 32

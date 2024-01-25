@@ -18,8 +18,9 @@ use risc0_zkvm::sha;
 fn main() {
    
     let hash: sha::Digest = env::read();
-
+    let hash2: sha::Digest = env::read();
     env::verify(INNER_PROOF_METHOD_ID, &serde::to_vec(&hash).unwrap()).unwrap();
+    env::verify(INNER_PROOF_METHOD_ID, &serde::to_vec(&hash2).unwrap()).unwrap();
     
     env::commit(&hash);
 }
