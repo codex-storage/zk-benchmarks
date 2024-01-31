@@ -16,4 +16,3 @@
 [submodule "hash/risc0/external/risc0"]
 	path = hash/risc0/external/risc0
 	url = https://github.com/risc0/risc0.git
-	branch = release-0.20
