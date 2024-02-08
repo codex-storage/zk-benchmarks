@@ -8,3 +8,5 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.79"
 plonky2 = "0.1.4"
+rand = "0.8.3"
+
