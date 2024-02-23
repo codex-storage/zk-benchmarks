@@ -6,7 +6,12 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.79"
+plonky2_u32 ={ git = "https://github.com/0xPolygonZero/plonky2-u32"}
+plonky2_field ={ git = "https://github.com/0xPolygonZero/plonky2"}
 plonky2 = "0.1.4"
 rand = "0.8.3"
+anyhow = "1.0.79"
+sha2 = "0.10"
+
+
 

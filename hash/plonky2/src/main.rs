@@ -1,6 +1,23 @@
 use std::process;
-mod bench;
+mod bench{
+    pub mod keccak;
+    pub mod poseidon;
+    pub mod sha256{
+        pub mod constants;
+        pub mod shift;
+        pub mod rotate;
+        pub mod sigma;
+        pub mod sha;
+        pub mod xor3;
+        pub mod maj;
+        pub mod ch;
+
+    }
+}
+
 use bench::poseidon::poseidon_bench;
+use bench::keccak::keccak_bench;
+use bench::sha256::sha::sha256_bench;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -20,6 +37,17 @@ fn main() {
             println!("Running Poseidon: ");
             eprintln!("Tree Depth: {:?}", size);
             let _ = poseidon_bench(size);
+        }
+
+        "keccak" => {
+            println!("Running keccak: ");
+            eprintln!("input size: {:?}", size);
+            let _ = keccak_bench(size);
+        }
+
+        "sha256" => {
+            println!("Running sha256: ");
+            let _ = sha256_bench();
         }
 
         _ => {
