@@ -1,0 +1,10 @@
+[workspace]
+[package]
+version = "0.1.0"
+name = "bench-script"
+edition = "2021"
+
+[dependencies]
+sp1-core = { git = "https://github.com/succinctlabs/sp1.git" }
+rand = "0.8"
+hex = "0.4"
