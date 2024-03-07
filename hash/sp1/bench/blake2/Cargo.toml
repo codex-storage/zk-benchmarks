@@ -1,0 +1,10 @@
+[workspace]
+[package]
+version = "0.1.0"
+name = "blake2-program"
+edition = "2021"
+
+[dependencies]
+sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git" }
+blake2 = "0.10.6"
+

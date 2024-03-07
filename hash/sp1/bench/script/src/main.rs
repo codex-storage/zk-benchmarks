@@ -30,6 +30,11 @@ fn main() {
             let _ = keccak_benchmark(size);
         }
 
+        "blake2" => {
+            println!("Running blake2 benchmark: ");
+            let _ = keccak_benchmark(size);
+        }
+
         _ => {
             println!("Wrong Benchmark Name!");
         }
