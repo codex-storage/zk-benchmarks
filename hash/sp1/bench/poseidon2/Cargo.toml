@@ -1,12 +1,12 @@
 [workspace]
 [package]
 version = "0.1.0"
-name = "bench-script"
+name = "poseidon2-program"
 edition = "2021"
 
 [dependencies]
-sp1-core = { git = "https://github.com/succinctlabs/sp1.git" }
-rand = "0.8"
-hex = "0.4"
+sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git" }
 zkhash = {git = "https://github.com/HorizenLabs/poseidon2"}
 ark-serialize = "0.4"
+
+

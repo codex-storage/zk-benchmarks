@@ -23,7 +23,7 @@ pub fn blake2_benchmark(size: usize) {
     let mut proof = SP1Prover::prove(BLAKE2_ELF, stdin).expect("proving failed");
     let t1 = t0.elapsed();
     // Read output.
-    let hash_bytes = proof.stdout.read::<[u8;64]>();
+    let hash_bytes = proof.stdout.read::<[u8;32]>();
     let hash = encode(hash_bytes);
     println!("hash: {}", hash);
 

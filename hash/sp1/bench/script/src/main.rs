@@ -1,9 +1,19 @@
 pub mod benches{
     pub mod keccak;
     pub mod sha256;
+    pub mod blake2;
+    pub mod blake3;
+    pub mod poseidon2;
 }
-use crate::benches::keccak::keccak_benchmark;
-use crate::benches::sha256::sha256_benchmark;
+
+use crate::benches::{
+    keccak::keccak_benchmark,
+    sha256::sha256_benchmark,
+    blake2::blake2_benchmark,
+    blake3::blake3_benchmark,
+    poseidon2::poseidon2_benchmark
+};
+
 use std::process;
 
 fn main() {
@@ -32,7 +42,17 @@ fn main() {
 
         "blake2" => {
             println!("Running blake2 benchmark: ");
-            let _ = keccak_benchmark(size);
+            let _ = blake2_benchmark(size);
+        }
+
+        "blake3" => {
+            println!("Running blake3 benchmark: ");
+            let _ = blake3_benchmark(size);
+        }
+
+        "poseidon2" => {
+            println!("Running poseidon2 benchmark: ");
+            let _ = poseidon2_benchmark(size);
         }
 
         _ => {

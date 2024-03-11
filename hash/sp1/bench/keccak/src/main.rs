@@ -1,6 +1,8 @@
 
 #![no_main]
 sp1_zkvm::entrypoint!(main);
+
+// patched keccak rust crate https://github.com/sp1-patches/tiny-keccak
 use tiny_keccak::{Hasher, Keccak};
 pub fn main() {
 
