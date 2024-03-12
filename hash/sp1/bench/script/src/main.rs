@@ -13,7 +13,7 @@ use crate::benches::{
     blake3::blake3_benchmark,
     poseidon2::poseidon2_benchmark
 };
-
+use sp1_core::utils;
 use std::process;
 
 fn main() {
@@ -27,6 +27,9 @@ fn main() {
     
     let bench_type = &args[1];
     let size = args[2].parse::<usize>().unwrap();
+
+    // Setup a tracer for logging.
+    utils::setup_logger();
 
     match bench_type.as_str() {
 

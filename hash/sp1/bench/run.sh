@@ -12,4 +12,4 @@ echo "HASH            = $ZKBENCH_HASH_TYPE"
 echo "Input Size (Bytes) = $ZKBENCH_INPUT_SIZE_BYTES"
 
 # Run the benchmarks
-./target/release/bench-script $ZKBENCH_HASH_TYPE $ZKBENCH_INPUT_SIZE_BYTES
+RUST_LOG=info ./target/release/bench-script $ZKBENCH_HASH_TYPE $ZKBENCH_INPUT_SIZE_BYTES
