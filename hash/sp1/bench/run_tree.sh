@@ -13,4 +13,4 @@ echo "HASH            = $ZKBENCH_HASH_TYPE_TREE"
 echo "Tree Depth = $ZKBENCH_TREE_DEPTH"
 
 # Run the benchmarks
-./target/release/bench-script $ZKBENCH_HASH_TYPE_TREE $ZKBENCH_TREE_DEPTH
+RUST_LOG=info ./target/release/bench-script $ZKBENCH_HASH_TYPE_TREE $ZKBENCH_TREE_DEPTH
