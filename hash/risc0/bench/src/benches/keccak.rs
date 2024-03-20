@@ -7,14 +7,17 @@ use risc0_zkvm::{ sha};
 use std::time::Instant;
 
 pub fn keccak_bench(input: Vec<u8>) {
-   
-    let start_time = Instant::now();
 
-    let env = ExecutorEnv::builder().write(&input).unwrap().build().unwrap();
-
+    let env = ExecutorEnv::builder()
+      .write_slice(&input)
+      .build()
+      .unwrap();
+    
     // Obtain the default prover.
     let prover = default_prover();
 
+    let start_time = Instant::now();
+    
     // Produce a receipt by proving the specified ELF binary.
     let receipt = prover.prove(env, KECCAK_ELF).unwrap();
 

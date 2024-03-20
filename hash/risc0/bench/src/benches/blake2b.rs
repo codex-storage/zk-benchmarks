@@ -8,7 +8,10 @@ use std::time::Instant;
 
 pub fn blake2b_bench(input: Vec<u8>) {
    
-    let env = ExecutorEnv::builder().write(&input).unwrap().build().unwrap();
+    let env = ExecutorEnv::builder()
+      .write_slice(&input)
+      .build()
+      .unwrap();
 
     // Obtain the default prover.
     let prover = default_prover();
