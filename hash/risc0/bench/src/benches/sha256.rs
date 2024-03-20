@@ -4,10 +4,14 @@ use benchmark_methods::{
 use risc0_zkvm::{default_prover, ExecutorEnv};
 use risc0_zkvm::{ sha};
 use std::time::Instant;
+
 pub fn sha_bench(input: Vec<u8>) {
    
-    let env = ExecutorEnv::builder().write(&input).unwrap().build().unwrap();
-
+    let env = ExecutorEnv::builder()
+      .write_slice(&input)
+      .build()
+      .unwrap();
+    
     // Obtain the default prover.
     let prover = default_prover();
     eprintln!("\n------risc0_zkvm sha hashing------\n");
