@@ -4,7 +4,7 @@ use benchmark_methods::{
     POSEIDON2_BABYBEAR_NATIVE_ID
 };
 use risc0_zkvm::{
-    default_prover, 
+    ExecutorImpl, 
     ExecutorEnv
 };
 use std::time::Instant;
@@ -24,24 +24,47 @@ pub fn poseidon2_babybear_native_bench(mt_depth: usize) {
 
     let env = ExecutorEnv::builder().write(&input).unwrap().build().unwrap();
 
-    // Obtain the default prover.
-    let prover = default_prover();
-
-    let start_time = Instant::now();
+    let mut exec = ExecutorImpl::from_elf(env, &POSEIDON2_BABYBEAR_NATIVE_ELF).unwrap();
+    let session = exec.run().unwrap();
+  
     // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove(env, POSEIDON2_BABYBEAR_NATIVE_ELF).unwrap();
-    let elapsed_time = start_time.elapsed();
-
-    // verify your receipt
-    receipt.verify(POSEIDON2_BABYBEAR_NATIVE_ID).unwrap();
-
-    let elapsed_time2 = start_time.elapsed();
-
-    let output: Vec<u32> = receipt.journal.decode().unwrap();
-
-    eprintln!("hash: {:?}", output);
+    let (receipt, proving_time) = {
+  
+      let start = Instant::now();
+      let receipt = session.prove().unwrap();
+      let elapsed = start.elapsed();
+  
+      (receipt, elapsed)
+    };
+  
+    //proof size
+    let proof_bytes = receipt
+      .inner
+      .composite()
+      .unwrap()
+      .segments
+      .iter()
+      .fold(0, |acc, segment| acc + segment.get_seal_bytes().len())
+      as u32;
     
-    eprintln!("Total time: {:?}", elapsed_time2);
-    eprintln!("Verification time: {:?}", elapsed_time2 - elapsed_time);
-
+    //number of cycles
+    let cycles = session.total_cycles;
+  
+    // verify your receipt
+    let verification_time = {
+  
+      let start = Instant::now(); 
+      receipt.verify(POSEIDON2_BABYBEAR_NATIVE_ID).unwrap();
+      let elapsed = start.elapsed();
+  
+      elapsed
+    };
+  
+    let output: Vec<u32> = receipt.journal.decode().unwrap();
+    
+    eprintln!("Proving Time: {:?}", proving_time);
+    eprintln!("Verification time: {:?}", verification_time);
+    eprintln!("Proof Bytes: {:?}", proof_bytes);
+    eprintln!("Total Cycles: {:?}", cycles);
+    eprintln!("Hash: {:?}", output);
 }

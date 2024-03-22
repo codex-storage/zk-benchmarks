@@ -1,7 +1,7 @@
 use benchmark_methods::{
     SHA256_ACCELERATED_ELF, SHA256_ACCELERATED_ID
 };
-use risc0_zkvm::{default_prover, ExecutorEnv};
+use risc0_zkvm::{ExecutorEnv, ExecutorImpl};
 use std::time::Instant;
 use hex::encode;
 pub fn sha_accelerated_bench(input: Vec<u8>) {
@@ -11,24 +11,47 @@ pub fn sha_accelerated_bench(input: Vec<u8>) {
       .build()
       .unwrap();
     
-    eprintln!("\n------RustCrypto sha hashing(accelerated)------\n");
-    // Obtain the default prover.
-    let prover = default_prover();
+    let mut exec = ExecutorImpl::from_elf(env, &SHA256_ACCELERATED_ELF).unwrap();
+    let session = exec.run().unwrap();
 
-    let start_time = Instant::now();
     // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove(env, SHA256_ACCELERATED_ELF).unwrap();
-    let elapsed_time = start_time.elapsed();
+    let (receipt, proving_time) = {
+
+      let start = Instant::now();
+      let receipt = session.prove().unwrap();
+      let elapsed = start.elapsed();
+
+      (receipt, elapsed)
+    };
+
+    //proof size
+    let proof_bytes = receipt
+    .inner
+    .composite()
+    .unwrap()
+    .segments
+    .iter()
+    .fold(0, |acc, segment| acc + segment.get_seal_bytes().len())
+    as u32;
+
+    //number of cycles
+    let cycles = session.total_cycles;
 
     // verify your receipt
-    receipt.verify(SHA256_ACCELERATED_ID).unwrap();
+    let verification_time = {
 
-    let elapsed_time2 = start_time.elapsed();
+    let start = Instant::now(); 
+    receipt.verify(SHA256_ACCELERATED_ID).unwrap();
+    let elapsed = start.elapsed();
+
+    elapsed
+  };
 
     let _output: [u8;32] = receipt.journal.decode().unwrap();
     let hash = encode(_output);
-    eprintln!("Total time: {:?}", elapsed_time2);
-    eprintln!("Verification time: {:?}", elapsed_time2 - elapsed_time);
-
+    eprintln!("Proving Time: {:?}", proving_time);
+    eprintln!("Verification Time: {:?}", verification_time);
+    eprintln!("Proof Bytes: {:?}", proof_bytes);
+    eprintln!("Total Cycles: {:?}", cycles);
     eprintln!("Hash: {:?}", hash);
 }
