@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 # If you want to try (experimental) std support, add `features = [ "std" ]` to risc0-zkvm
 risc0-zkvm = { path = "../../../external/risc0/risc0/zkvm", default-features = false,features = ["std"] }
-sha3 = "0.10.8"
+sha3 = { git = "https://github.com/risc0/RustCrypto-hashes", tag = "sha2-v0.10.6-risczero.0" }
 sha2 ={ git = "https://github.com/risc0/RustCrypto-hashes", tag = "sha2-v0.10.6-risczero.0" }
 risc0-zkp = {path = "../../../external/risc0/risc0/zkp"}
 blake3 = "1.5.0"
