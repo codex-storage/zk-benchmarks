@@ -1,36 +1,57 @@
 use benchmark_methods::{
     SHA256_ELF, SHA256_ID
 };
-use risc0_zkvm::{default_prover, ExecutorEnv};
-use risc0_zkvm::{ sha};
+use risc0_zkvm::{ExecutorEnv, ExecutorImpl, sha};
 use std::time::Instant;
 
 pub fn sha_bench(input: Vec<u8>) {
    
-    let env = ExecutorEnv::builder()
-      .write_slice(&input)
-      .build()
-      .unwrap();
-    
-    // Obtain the default prover.
-    let prover = default_prover();
-    eprintln!("\n------risc0_zkvm sha hashing------\n");
+  let env = ExecutorEnv::builder()
+    .write_slice(&input)
+    .build()
+    .unwrap();
+  let mut exec = ExecutorImpl::from_elf(env, &SHA256_ELF).unwrap();
+  let session = exec.run().unwrap();
 
-    let start_time = Instant::now();
-    // Produce a receipt by proving the specified ELF binary.
-    let receipt = prover.prove(env, SHA256_ELF).unwrap();
-    let elapsed_time = start_time.elapsed();
+  // Produce a receipt by proving the specified ELF binary.
+  let (receipt, proving_time) = {
 
-    // verify your receipt
+    let start = Instant::now();
+    let receipt = session.prove().unwrap();
+    let elapsed = start.elapsed();
+
+    (receipt, elapsed)
+  };
+
+  //proof size
+  let proof_bytes = receipt
+    .inner
+    .composite()
+    .unwrap()
+    .segments
+    .iter()
+    .fold(0, |acc, segment| acc + segment.get_seal_bytes().len())
+    as u32;
+  
+  //number of cycles
+  let cycles = session.total_cycles;
+
+  // verify your receipt
+  let verification_time = {
+
+    let start = Instant::now(); 
     receipt.verify(SHA256_ID).unwrap();
+    let elapsed = start.elapsed();
 
-    let elapsed_time2 = start_time.elapsed();
+    elapsed
+  };
 
-    let _output: sha::Digest = receipt.journal.decode().unwrap();
+  let _output: sha::Digest = receipt.journal.decode().unwrap();
 
-    eprintln!("Total time: {:?}", elapsed_time2);
-    eprintln!("Verification time: {:?}", elapsed_time2 - elapsed_time);
-
-    eprintln!("Hash: {:?}", _output);
+  eprintln!("Proving Time: {:?}", proving_time);
+  eprintln!("Verification Time: {:?}", verification_time);
+  eprintln!("Proof Bytes: {:?}", proof_bytes);
+  eprintln!("Total Cycles: {:?}", cycles);
+  eprintln!("Hash: {:?}", _output);
 
 }

@@ -39,7 +39,7 @@ fn main() {
             sha_bench(input.clone());
         }
         "sha256_accelerated" => {
-            println!("Accelerated SHA256 Benchmarking: ");
+            println!("Accelerated SHA256(Patched rustCrypto) Benchmarking: ");
             eprintln!("data size(bytes): {:?}", size);
             let input = generate_bytes(size);
             sha_accelerated_bench(input.clone());
@@ -79,7 +79,7 @@ fn main() {
         }
 
         "poseidon2_babybear_native" => {
-            println!("Poseidon2 Benchmarking on the BabyBear field: ");
+            println!("Poseidon2 Benchmarking on the risc0's native BabyBear field: ");
             eprintln!("Tree Depth: {:?}", size);
             eprintln!("number of inputs {:?}",  (1 << size) * 8);
             poseidon2_babybear_native_bench(size);

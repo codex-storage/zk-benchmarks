@@ -3,7 +3,6 @@
 use std::io::Read;
 use risc0_zkvm::{guest::env, sha, sha::Sha256};
 risc0_zkvm::guest::entry!(main);
-use risc0_zkvm::guest::env::cycle_count;
 
 pub fn main() {
 
@@ -11,8 +10,7 @@ pub fn main() {
     env::stdin().read_to_end(&mut data).unwrap();
 
     let hash = sha::Impl::hash_bytes(&data);
-    
-    eprintln!("total cycle count for hashing: {:?}",cycle_count());
+
     env::commit(&hash)
 }
 

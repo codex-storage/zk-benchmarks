@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-risc0-zkvm = { path = "../external/risc0/risc0/zkvm" }
+risc0-zkvm = { path = "../external/risc0/risc0/zkvm", default-features = false, features = ["prove",] }
 serde = "1.0"
 rand = "0.8.3"
 sha2 ={ git = "https://github.com/risc0/RustCrypto-hashes", tag = "sha2-v0.10.6-risczero.0" }
@@ -14,3 +14,10 @@ ark-ff = "0.4.2"
 hex = "0.4.3"
 ark-serialize = "0.4"
 risc0-core = { path = "../external/risc0/risc0/core" }
+
+[profile.dev]
+opt-level = 3
+
+[profile.release]
+debug = 1
+lto = true
