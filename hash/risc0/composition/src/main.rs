@@ -14,10 +14,11 @@
 
 use composition_methods::{COMPOSITION_METHOD_ELF, COMPOSITION_METHOD_ID};
 use inner_proof::sha_bench;
-use risc0_zkvm::{default_prover, ExecutorEnv};
+use risc0_zkvm::ExecutorEnv;
 use risc0_zkvm::sha;
 use std::time::Instant;
 use std::process;
+use risc0_zkvm::ExecutorImpl;
 
 fn main() {
     
@@ -31,7 +32,10 @@ fn main() {
     
     let data_size = args[1].parse::<usize>().unwrap();
     
-    let t0 = Instant::now();
+    // tracer added for logging info
+    tracing_subscriber::fmt()
+        .with_env_filter(tracing_subscriber::filter::EnvFilter::from_default_env())
+        .init();
 
     let (hash_receipt, hash) = sha_bench(data_size.try_into().unwrap());
     let (hash_receipt2, hash2) = sha_bench(data_size.try_into().unwrap());
@@ -47,19 +51,46 @@ fn main() {
         .build()
         .unwrap();
 
-    let t1 = t0.elapsed();
+    let mut exec = ExecutorImpl::from_elf(env, &COMPOSITION_METHOD_ELF).unwrap();
+    let session = exec.run().unwrap();
 
-    let receipt = default_prover().prove(env, COMPOSITION_METHOD_ELF).unwrap();
+    // Produce a receipt by proving the specified ELF binary.
+    let (receipt, proving_time) = {
 
-    let t2 = t0.elapsed();
+        let start = Instant::now();
+        let receipt = session.prove().unwrap();
+        let elapsed = start.elapsed();
 
-    receipt.verify(COMPOSITION_METHOD_ID).unwrap();
+        (receipt, elapsed)
+    };
 
-    let t3 = t0.elapsed();
+    //proof size
+    let proof_bytes = receipt
+        .inner
+        .composite()
+        .unwrap()
+        .segments
+        .iter()
+        .fold(0, |acc, segment| acc + segment.get_seal_bytes().len())
+        as u32;
+
+    //number of cycles
+    let cycles = session.total_cycles;
+
+    // verify your receipt
+    let verification_time = {
+
+        let start = Instant::now(); 
+        receipt.verify(COMPOSITION_METHOD_ID).unwrap();
+        let elapsed = start.elapsed();
+
+        elapsed
+    };
 
     let hash: sha::Digest = receipt.journal.decode().unwrap();
-    eprintln!("hash: {:?}", hash);
-    eprintln!("ExecutorEnv Builder time: {:?}", t1);
-    eprintln!("Proof generation + receiving receipt time: {:?}", t2 - t1);
-    eprintln!("Verification time: {:?}", t3 - t2);
+    eprintln!("Proving Time: {:?}", proving_time);
+    eprintln!("Verification Time: {:?}", verification_time);
+    eprintln!("Proof Bytes: {:?}", proof_bytes);
+    eprintln!("Total Cycles: {:?}", cycles);
+    eprintln!("Hash: {:?}", hash);
 }

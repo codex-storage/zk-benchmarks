@@ -6,8 +6,9 @@ edition = "2021"
 [dependencies]
 composition-methods = { path = "methods" }
 inner_proof = { path = "../inner_proof" }
-risc0-zkvm = { path = "../external/risc0/risc0/zkvm" }
+risc0-zkvm = { path = "../external/risc0/risc0/zkvm" , default-features = false, features = ["prove",] }
 serde = "1.0"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 [features]
 cuda = ["risc0-zkvm/cuda"]

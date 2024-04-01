@@ -16,16 +16,12 @@ use inner_proof_methods::INNER_PROOF_METHOD_ID;
 use risc0_zkvm::{guest::env, serde};
 use risc0_zkvm::sha;
 fn main() {
-    let c1 = env::cycle_count();
     let hash: sha::Digest = env::read();
     let hash2: sha::Digest = env::read();
-    let c2 = env::cycle_count();
 
     env::verify(INNER_PROOF_METHOD_ID, &serde::to_vec(&hash).unwrap()).unwrap();
     env::verify(INNER_PROOF_METHOD_ID, &serde::to_vec(&hash2).unwrap()).unwrap();
-    let c3 = env::cycle_count();
-    eprintln!("cycles for input builder: {:?}", c2 - c1);
-    eprintln!("cycles for inner_proof verification inside guest: {:?}", c3 - c2);
+
     env::commit(&hash);
 }
 

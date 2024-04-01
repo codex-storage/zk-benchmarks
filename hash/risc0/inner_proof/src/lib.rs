@@ -4,27 +4,17 @@ use risc0_zkvm::{ sha};
 use rand::Rng;
 
 
-pub fn generate_bytes(size: u32) -> String {
+fn generate_bytes(size: usize) -> Vec<u8> {
     let mut rng = rand::thread_rng();
-    let random_bytes: Vec<u8> = (0..(size/2)).map(|_| rng.gen()).collect();
-
-    let random_string: String = random_bytes
-        .iter()
-        .map(|byte| format!("{:02X}", byte)) // Convert each byte to a two-digit hexadecimal string
-        .collect();
-
-    // eprintln!("bytes: {:?}", random_string.as_bytes().len());
-    random_string
-
+    (0..size).map(|_| rng.gen()).collect()
 }
 
-pub fn sha_bench(size: u32) -> (Receipt, sha::Digest) {
+pub fn sha_bench(size: usize) -> (Receipt, sha::Digest) {
 
     let input = generate_bytes(size);
 
     let env = ExecutorEnv::builder()
-        .write(&input)
-        .unwrap()
+        .write_slice(&input)
         .build()
         .unwrap();
 
