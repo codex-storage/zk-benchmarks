@@ -14,6 +14,7 @@ ark-ff = "0.4.2"
 hex = "0.4.3"
 ark-serialize = "0.4"
 risc0-core = { path = "../external/risc0/risc0/core" }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 [profile.dev]
 opt-level = 3

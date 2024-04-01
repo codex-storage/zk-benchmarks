@@ -30,6 +30,10 @@ fn main() {
     
     let hash_type = &args[1];
     let size = args[2].parse::<usize>().unwrap();
+    
+    tracing_subscriber::fmt()
+        .with_env_filter(tracing_subscriber::filter::EnvFilter::from_default_env())
+        .init();
 
     match hash_type.as_str() {
         "sha256" => {

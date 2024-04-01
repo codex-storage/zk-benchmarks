@@ -5,7 +5,8 @@ use benchmark_methods::{
 };
 use risc0_zkvm::{
     ExecutorImpl, 
-    ExecutorEnv
+    ExecutorEnv,
+    sha::Digest
 };
 use std::time::Instant;
 use rand::Rng;
@@ -60,7 +61,7 @@ pub fn poseidon2_babybear_native_bench(mt_depth: usize) {
       elapsed
     };
   
-    let output: Vec<u32> = receipt.journal.decode().unwrap();
+    let output: Box<Digest> = receipt.journal.decode().unwrap();
     
     eprintln!("Proving Time: {:?}", proving_time);
     eprintln!("Verification time: {:?}", verification_time);
