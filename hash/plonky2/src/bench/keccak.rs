@@ -19,7 +19,7 @@
 
 
 
-pub fn keccak_bench(size: usize) {
+pub fn keccak_bench(_size: usize) {
 
 
 }

@@ -10,6 +10,7 @@ use plonky2::plonk::circuit_builder::CircuitBuilder;
 use plonky2::plonk::circuit_data::CircuitConfig;
 use plonky2::plonk::config::{/*AlgebraicHasher,*/ GenericConfig, PoseidonGoldilocksConfig};
 use rand::Rng;
+use std::time;
 
 fn generate_data(size: usize) -> Vec<GoldilocksField> {
     // let mut rng = rand::thread_rng();
@@ -56,9 +57,23 @@ pub fn poseidon_bench(depth: usize) -> Result<()> {
 
 
     let data = builder.build::<C>();
-    let proof = data.prove(pw)?;
 
+    let (proof_generation_time, proof) = {
 
-    data.verify(proof)
+        let start = time::Instant::now();
+        let proof = data.prove(pw)?;
+        let end_time = start.elapsed();
+        (end_time, proof)
+    };
+    
+    let (verification_time, result) = {
+        let start = time::Instant::now();
+        let result = data.verify(proof);
+        let end_time = start.elapsed();
+        (end_time, result)
+    };
 
+    eprintln!("proof generation time: {:?}", proof_generation_time);
+    eprintln!("verification time: {:?}", verification_time);
+    result
 }
