@@ -196,7 +196,6 @@ pub fn sha256_bench() -> Result<()> {
     let mut hasher = Sha256::new();
     hasher.update(msg.clone());
     let hash = hasher.finalize();
-    // println!("Hash: {:#04X}", hash);
 
     let msg_bits = array_to_bits(&msg.clone());
     let len = msg.len() * 8;
@@ -226,14 +225,25 @@ pub fn sha256_bench() -> Result<()> {
         builder.num_gates()
     );
     let data = builder.build::<C>();
-    // let timing = TimingTree::new("prove", Level::Debug);
-    let proof = data.prove(pw).unwrap();
-    // timing.print();
 
-    // let timing = TimingTree::new("verify", Level::Debug);
-    let res = data.verify(proof);
-    // timing.print();
+    let (proof_time, proof ) = {
 
+        let start = std::time::Instant::now();
+        let proof = data.prove(pw).unwrap();
+        let end = start.elapsed();
+        (end, proof)
+    };
+    
+    let (verification_time, res) = {
+        let start = std::time::Instant::now();
+        let res = data.verify(proof);
+        let end = start.elapsed();
+        (end, res)
+    };
+
+    eprintln!("Proof Generation Time: {:?}", proof_time);
+    eprintln!("Verification Time: {:?}", verification_time);
+    
     res
 
 }

@@ -13,8 +13,6 @@ use rand::Rng;
 use std::time;
 
 fn generate_data(size: usize) -> Vec<GoldilocksField> {
-    // let mut rng = rand::thread_rng();
-    // (0..size).map(|_| rng.gen()).collect()
 
     let mut data: Vec<GoldilocksField> = Vec::new();
     for _ in 0..(1<<size) {
@@ -22,7 +20,6 @@ fn generate_data(size: usize) -> Vec<GoldilocksField> {
         let random_u64: u64 = rng.gen();
         data.push(GoldilocksField::from_canonical_u64(random_u64));
     }
-    // eprint!("data: {:?}", data);
     data
 
 }
