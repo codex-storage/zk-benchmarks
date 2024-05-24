@@ -5,5 +5,5 @@ name = "blake3-program"
 edition = "2021"
 
 [dependencies]
-sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git" }
+sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git", rev = "4528b7861c60ef5e25c2d0b328fc6d244e2ac98e" }
 blake3 = "1.5.0"

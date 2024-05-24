@@ -5,7 +5,7 @@ name = "poseidon2-program"
 edition = "2021"
 
 [dependencies]
-sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git" }
+sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git" , rev = "4528b7861c60ef5e25c2d0b328fc6d244e2ac98e"}
 zkhash = {git = "https://github.com/HorizenLabs/poseidon2"}
 ark-serialize = "0.4"
 

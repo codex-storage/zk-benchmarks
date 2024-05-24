@@ -5,7 +5,7 @@ name = "bench-script"
 edition = "2021"
 
 [dependencies]
-sp1-core = { git = "https://github.com/succinctlabs/sp1.git" }
+sp1-core = { git = "https://github.com/succinctlabs/sp1.git", rev = "4528b7861c60ef5e25c2d0b328fc6d244e2ac98e" }
 rand = "0.8"
 hex = "0.4"
 zkhash = {git = "https://github.com/HorizenLabs/poseidon2"}
