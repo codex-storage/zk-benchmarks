@@ -1,24 +1,29 @@
-use plonky2::iop::target::{BoolTarget, Target};
+use plonky2::iop::target::BoolTarget;
 use plonky2::hash::hash_types::RichField;
 use plonky2::field::extension::Extendable;
 use plonky2::plonk::circuit_builder::CircuitBuilder;
-
+use plonky2_u32::gadgets::arithmetic_u32::U32Target;
 use super::binary_arithmetic::CircuitBuilderBoolTarget;
-#[derive(Clone, Copy, Debug)]
-pub struct U32Target(pub Target);
+use plonky2_u32::gadgets::arithmetic_u32::CircuitBuilderU32;
 
-pub trait CircuitBuilderU32<F: RichField + Extendable<D>, const D: usize> {
+pub trait CircuitBuilderU32M<F: RichField + Extendable<D>, const D: usize> {
     fn or_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
     fn and_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
     fn xor_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
+    fn rotate_left_u32(&mut self, a: U32Target, n: u8) -> U32Target;
 
     fn from_u32(&mut self, a: U32Target) -> Vec<BoolTarget>;
     fn to_u32(&mut self, a: Vec<BoolTarget>) -> U32Target;
 
+    // fn constant_u32(&mut self, c: u32) -> U32Target;
 }
 
-impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU32<F, D>
+impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU32M<F, D>
     for CircuitBuilder<F, D>{
+
+        // fn constant_u32(&mut self, c: u32) -> U32Target {
+        //     U32Target(self.constant(F::from_canonical_u32(c)))
+        // }
 
         fn from_u32(&mut self, a: U32Target) -> Vec<BoolTarget> {
 
@@ -76,5 +81,11 @@ impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU32<F, D>
                 res.push(r);
             }
             self.to_u32(res)
+        }
+
+        fn rotate_left_u32(&mut self, a: U32Target, n: u8) -> U32Target {
+            let two_power_n = self.constant_u32(0x1 << n);
+            let (lo, hi) = self.mul_u32(a, two_power_n);
+            self.add_u32(lo, hi).0
         }
     }

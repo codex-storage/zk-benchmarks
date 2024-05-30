@@ -1,27 +1,17 @@
-// use anyhow::Result;
 use plonky2::field::types::Field;
-// use plonky2::gates::poseidon::PoseidonGate;
-// use plonky2::hash::hash_types::{HashOutTarget, RichField};
 use plonky2::field::goldilocks_field::GoldilocksField;
-use plonky2::hash::keccak::{KeccakHash, KeccakPermutation, /*KeccakPermutation */};
-// use plonky2::hash::keccak;
-use plonky2::hash::poseidon::PoseidonHash;
-// use plonky2::iop::witness::{PartialWitness, WitnessWrite};
+use plonky2::hash::keccak::KeccakHash;
 use plonky2::plonk::circuit_builder::CircuitBuilder;
 use plonky2::plonk::circuit_data::CircuitConfig;
-use plonky2::plonk::config::{/*AlgebraicHasher,*/ GenericConfig,/* PoseidonGoldilocksConfig, */ KeccakGoldilocksConfig};
+use plonky2::plonk::config::{GenericConfig, KeccakGoldilocksConfig};
 use rand::Rng;
-// use plonky2::iop::target::Target;
-// use plonky2::iop::target::BoolTarget;
 use plonky2::field::extension::Extendable;
-// use std::marker::PhantomData;
 use plonky2::plonk::config::Hasher;
-
-use plonky2_u32::gadgets::arithmetic_u32::{CircuitBuilderU32, U32Target};
-use plonky2::field::types::PrimeField64;
-use plonky2::iop::witness::Witness;
 use plonky2::hash::hash_types::RichField;
-use plonky2::iop::target::BoolTarget;
+
+use crate::arithmetic::u64_arithmetic::U64Target;
+use crate::arithmetic::u64_arithmetic::CircuitBuilderU64;
+
 
 fn generate_data(size: usize) -> Vec<GoldilocksField> {
 
