@@ -15,6 +15,12 @@ mod bench{
     }
 }
 
+mod arithmetic {
+    pub mod binary_arithmetic;
+    pub mod u32_arithmetic;
+    pub mod u64_arithmetic;
+}
+
 use bench::poseidon::poseidon_bench;
 use bench::keccak::keccak_bench;
 use bench::sha256::sha::sha256_bench;

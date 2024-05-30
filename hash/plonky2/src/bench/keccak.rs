@@ -56,87 +56,87 @@ pub fn keccak_bench(_size: usize) {
 
 //----------------------------------------------------------
 
-const KECCAK_WIDTH: usize = 1600;
-const KECCAK_RATE: usize = 1088;
-const KECCAK_CAPACITY: usize = KECCAK_WIDTH - KECCAK_RATE;
-const KECCAK_LANES: usize = KECCAK_WIDTH / 64;
-const KECCAK_ROUNDS: usize = 24;
+// const KECCAK_WIDTH: usize = 1600;
+// const KECCAK_RATE: usize = 1088;
+// const KECCAK_CAPACITY: usize = KECCAK_WIDTH - KECCAK_RATE;
+// const KECCAK_LANES: usize = KECCAK_WIDTH / 64;
+// const KECCAK_ROUNDS: usize = 24;
 
-const ROUND_CONSTANTS: [u64; KECCAK_ROUNDS] = [
-    0x0000000000000001, 0x0000000000008082, 0x800000000000808A, 0x8000000080008000,
-    0x000000000000808B, 0x0000000080000001, 0x8000000080008081, 0x8000000000008009,
-    0x000000000000008A, 0x0000000000000088, 0x0000000080008009, 0x000000008000000A,
-    0x000000008000808B, 0x800000000000008B, 0x8000000000008089, 0x8000000000008003,
-    0x8000000000008002, 0x8000000000000080, 0x000000000000800A, 0x800000008000000A,
-    0x8000000080008081, 0x8000000000008080, 0x0000000080000001, 0x8000000080008008,
-];
+// const ROUND_CONSTANTS: [u64; KECCAK_ROUNDS] = [
+//     0x0000000000000001, 0x0000000000008082, 0x800000000000808A, 0x8000000080008000,
+//     0x000000000000808B, 0x0000000080000001, 0x8000000080008081, 0x8000000000008009,
+//     0x000000000000008A, 0x0000000000000088, 0x0000000080008009, 0x000000008000000A,
+//     0x000000008000808B, 0x800000000000008B, 0x8000000000008089, 0x8000000000008003,
+//     0x8000000000008002, 0x8000000000000080, 0x000000000000800A, 0x800000008000000A,
+//     0x8000000080008081, 0x8000000000008080, 0x0000000080000001, 0x8000000080008008,
+// ];
 
-fn initialize_state() -> [u64; KECCAK_LANES] {
-    [0; KECCAK_LANES]
-}
-pub struct U64Target([U32Target;2]);
+// fn initialize_state() -> [u64; KECCAK_LANES] {
+//     [0; KECCAK_LANES]
+// }
+// pub struct U64Target([U32Target;2]);
 
-// copied from sha256 circuit
-// TODO: move to some common place
-pub fn u32_to_bits_target<F: RichField + Extendable<D>, const D: usize, const B: usize>(
-    builder: &mut CircuitBuilder<F, D>,
-    a: &U32Target,
-) -> Vec<BoolTarget> {
-    let mut res = Vec::new();
-    let bit_targets = builder.split_le_base::<B>(a.0, 32);
-    for i in (0..32).rev() {
-        res.push(BoolTarget::new_unsafe(bit_targets[i]));
-    }
-    res
-}
+// // copied from sha256 circuit
+// // TODO: move to some common place
+// pub fn u32_to_bits_target<F: RichField + Extendable<D>, const D: usize, const B: usize>(
+//     builder: &mut CircuitBuilder<F, D>,
+//     a: &U32Target,
+// ) -> Vec<BoolTarget> {
+//     let mut res = Vec::new();
+//     let bit_targets = builder.split_le_base::<B>(a.0, 32);
+//     for i in (0..32).rev() {
+//         res.push(BoolTarget::new_unsafe(bit_targets[i]));
+//     }
+//     res
+// }
 
-// copied from sha256 circuit
-// TODO: move to some common place
-pub fn bits_to_u32_target<F: RichField + Extendable<D>, const D: usize>(
-    builder: &mut CircuitBuilder<F, D>,
-    bits_target: Vec<BoolTarget>,
-) -> U32Target {
-    let bit_len = bits_target.len();
-    assert_eq!(bit_len, 32);
-    U32Target(builder.le_sum(bits_target[0..32].iter().rev()))
-}
+// // copied from sha256 circuit
+// // TODO: move to some common place
+// pub fn bits_to_u32_target<F: RichField + Extendable<D>, const D: usize>(
+//     builder: &mut CircuitBuilder<F, D>,
+//     bits_target: Vec<BoolTarget>,
+// ) -> U32Target {
+//     let bit_len = bits_target.len();
+//     assert_eq!(bit_len, 32);
+//     U32Target(builder.le_sum(bits_target[0..32].iter().rev()))
+// }
 
-//TODO: not tested
-pub fn xor_u64<F: RichField + Extendable<D>, const D: usize>(
-    builder: &mut CircuitBuilder<F, D>,
-    x: U64Target,
-    y: U64Target,
-) -> U64Target {
-    let xor_x0_y0 = xor_u32(builder, x.0[0], y.0[0]);
-    let xor_x1_y1 = xor_u32(builder, x.0[1], y.0[1]);
+// //TODO: not tested
+// pub fn xor_u64<F: RichField + Extendable<D>, const D: usize>(
+//     builder: &mut CircuitBuilder<F, D>,
+//     x: U64Target,
+//     y: U64Target,
+// ) -> U64Target {
+//     let xor_x0_y0 = xor_u32(builder, x.0[0], y.0[0]);
+//     let xor_x1_y1 = xor_u32(builder, x.0[1], y.0[1]);
 
-    U64Target([xor_x0_y0,xor_x1_y1])
+//     U64Target([xor_x0_y0,xor_x1_y1])
     
-}
+// }
 
-pub fn xor_u32<F: RichField + Extendable<D>, const D: usize>(
-    builder: &mut CircuitBuilder<F, D>,
-    x: U32Target,
-    y: U32Target,
-) -> U32Target {
+// pub fn xor_u32<F: RichField + Extendable<D>, const D: usize>(
+//     builder: &mut CircuitBuilder<F, D>,
+//     x: U32Target,
+//     y: U32Target,
+// ) -> U32Target {
     
-    let bits_target_x = u32_to_bits_target::<F, D, 2>(builder, &x);
-    let bits_target_y = u32_to_bits_target::<F, D, 2>(builder, &y);
+//     let bits_target_x = u32_to_bits_target::<F, D, 2>(builder, &x);
+//     let bits_target_y = u32_to_bits_target::<F, D, 2>(builder, &y);
 
-    assert_eq!(bits_target_x.len(), bits_target_y.len());
+//     assert_eq!(bits_target_x.len(), bits_target_y.len());
 
-    let mut xor_result_final = Vec::<BoolTarget>::new();
-    for i in 0..bits_target_x.len() {
-        let a_plus_b = builder.add(bits_target_x.get(i).unwrap().target, bits_target_y.get(i).unwrap().target);
-        let ab = builder.mul(bits_target_x.get(i).unwrap().target, bits_target_y.get(i).unwrap().target);
-        let two_ab = builder.mul_const(F::from_canonical_u64(2), ab);
-        let xor_result = builder.sub(a_plus_b, two_ab);
-        xor_result_final.push(BoolTarget::new_unsafe(xor_result));
-    }
-    let result = bits_to_u32_target(builder, xor_result_final);
-    result
+//     let mut xor_result_final = Vec::<BoolTarget>::new();
+//     for i in 0..bits_target_x.len() {
+//         let a_plus_b = builder.add(bits_target_x.get(i).unwrap().target, bits_target_y.get(i).unwrap().target);
+//         let ab = builder.mul(bits_target_x.get(i).unwrap().target, bits_target_y.get(i).unwrap().target);
+//         let two_ab = builder.mul_const(F::from_canonical_u64(2), ab);
+//         let xor_result = builder.sub(a_plus_b, two_ab);
+//         xor_result_final.push(BoolTarget::new_unsafe(xor_result));
+//     }
+//     let result = bits_to_u32_target(builder, xor_result_final);
+//     result
 
-}
+// }
 
 // Theta
 // pub fn theta<F: RichField + Extendable<D>, const D: usize>(
