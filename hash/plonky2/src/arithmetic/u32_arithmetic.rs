@@ -6,6 +6,8 @@ use plonky2_u32::gadgets::arithmetic_u32::U32Target;
 use super::binary_arithmetic::CircuitBuilderBoolTarget;
 use plonky2_u32::gadgets::arithmetic_u32::CircuitBuilderU32;
 
+//TODO: remove the dead codes later
+#[allow(dead_code)]
 pub trait CircuitBuilderU32M<F: RichField + Extendable<D>, const D: usize> {
     fn or_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
     fn and_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
@@ -15,15 +17,13 @@ pub trait CircuitBuilderU32M<F: RichField + Extendable<D>, const D: usize> {
     fn from_u32(&mut self, a: U32Target) -> Vec<BoolTarget>;
     fn to_u32(&mut self, a: Vec<BoolTarget>) -> U32Target;
 
-    // fn constant_u32(&mut self, c: u32) -> U32Target;
+    // not := 0xFFFFFFFF - x
+    fn not_u32(&mut self, a: U32Target) -> U32Target;
+        
 }
 
 impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU32M<F, D>
     for CircuitBuilder<F, D>{
-
-        // fn constant_u32(&mut self, c: u32) -> U32Target {
-        //     U32Target(self.constant(F::from_canonical_u32(c)))
-        // }
 
         fn from_u32(&mut self, a: U32Target) -> Vec<BoolTarget> {
 
@@ -88,4 +88,12 @@ impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU32M<F, D>
             let (lo, hi) = self.mul_u32(a, two_power_n);
             self.add_u32(lo, hi).0
         }
+
+        // not := 0xFFFFFFFF - x
+        fn not_u32(&mut self, a: U32Target) -> U32Target {
+            let zero = self.zero_u32();
+            let ff = self.constant_u32(0xFFFFFFFF);
+            self.sub_u32(ff, a, zero).0
+        }
+
     }

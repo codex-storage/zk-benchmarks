@@ -3,6 +3,8 @@ use plonky2::field::extension::Extendable;
 use plonky2::plonk::circuit_builder::CircuitBuilder;
 use plonky2::iop::target::BoolTarget;
 
+//TODO: remove the dead codes later
+#[allow(dead_code)]
 pub trait CircuitBuilderBoolTarget<F: RichField + Extendable<D>, const D: usize> {
     fn and(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget;
     fn or(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget;
