@@ -9,10 +9,10 @@ use plonky2_u32::gadgets::arithmetic_u32::CircuitBuilderU32;
 //TODO: remove the dead codes later
 #[allow(dead_code)]
 pub trait CircuitBuilderU32M<F: RichField + Extendable<D>, const D: usize> {
-    fn or_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
+    // fn or_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
     fn and_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
     fn xor_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
-    fn rotate_left_u32(&mut self, a: U32Target, n: u8) -> U32Target;
+    // fn rotate_left_u32(&mut self, a: U32Target, n: u8) -> U32Target;
 
     fn from_u32(&mut self, a: U32Target) -> Vec<BoolTarget>;
     fn to_u32(&mut self, a: Vec<BoolTarget>) -> U32Target;
@@ -43,18 +43,18 @@ impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU32M<F, D>
         }
 
 
-        fn or_u32(&mut self, a: U32Target, b: U32Target) -> U32Target {
-            let binary_target_a = self.from_u32(a);
-            let binary_target_b = self.from_u32(b);
+        // fn or_u32(&mut self, a: U32Target, b: U32Target) -> U32Target {
+        //     let binary_target_a = self.from_u32(a);
+        //     let binary_target_b = self.from_u32(b);
 
-            let mut res = Vec::<BoolTarget>::new();
-            for i in 0..32 {
+        //     let mut res = Vec::<BoolTarget>::new();
+        //     for i in 0..32 {
 
-                let r = self.or(binary_target_a[i], binary_target_b[i]);
-                res.push(r);
-            }
-            self.to_u32(res)
-        }
+        //         let r = self.or(binary_target_a[i], binary_target_b[i]);
+        //         res.push(r);
+        //     }
+        //     self.to_u32(res)
+        // }
 
         fn and_u32(&mut self, a: U32Target, b: U32Target) -> U32Target {
             let binary_target_a = self.from_u32(a);
@@ -83,11 +83,11 @@ impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU32M<F, D>
             self.to_u32(res)
         }
 
-        fn rotate_left_u32(&mut self, a: U32Target, n: u8) -> U32Target {
-            let two_power_n = self.constant_u32(0x1 << n);
-            let (lo, hi) = self.mul_u32(a, two_power_n);
-            self.add_u32(lo, hi).0
-        }
+        // fn rotate_left_u32(&mut self, a: U32Target, n: u8) -> U32Target {
+        //     let two_power_n = self.constant_u32(0x1 << n);
+        //     let (lo, hi) = self.mul_u32(a, two_power_n);
+        //     self.add_u32(lo, hi).0
+        // }
 
         // not := 0xFFFFFFFF - x
         fn not_u32(&mut self, a: U32Target) -> U32Target {

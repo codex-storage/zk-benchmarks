@@ -6,8 +6,8 @@ use plonky2::iop::target::BoolTarget;
 //TODO: remove the dead codes later
 #[allow(dead_code)]
 pub trait CircuitBuilderBoolTarget<F: RichField + Extendable<D>, const D: usize> {
-    fn and(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget;
-    fn or(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget;
+    // fn and(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget;
+    // fn or(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget;
     fn xor(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget;
 
 }
@@ -22,11 +22,11 @@ impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderBoolTarget<F, D
 
         }
 
-        fn and(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget {
-            self.and(a, b)
-        }
+        // fn and(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget {
+        //     self.and(a, b)
+        // }
 
-        fn or(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget {
-            self.or(a, b)
-        }
+        // fn or(&mut self, a: BoolTarget, b: BoolTarget) -> BoolTarget {
+        //     self.or(a, b)
+        // }
     }

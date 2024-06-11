@@ -1,6 +1,5 @@
 use std::process;
 mod bench{
-    pub mod keccak;
     pub mod poseidon;
     pub mod sha256{
         pub mod constants;
@@ -13,6 +12,15 @@ mod bench{
         pub mod ch;
 
     }
+
+    pub mod  keccak256{
+        pub mod theta;
+        pub mod rho;
+        pub mod pi;
+        pub mod iota;
+        pub mod chi;
+        pub mod keccak;
+    }
 }
 
 mod arithmetic {
@@ -22,7 +30,7 @@ mod arithmetic {
 }
 
 use bench::poseidon::poseidon_bench;
-use bench::keccak::keccak_bench;
+use bench::keccak256::keccak::keccak_bench;
 use bench::sha256::sha::sha256_bench;
 
 fn main() {
