@@ -18,6 +18,7 @@ pub trait CircuitBuilderU64<F: RichField + Extendable<D>, const D: usize> {
     fn zero_u64(&mut self) -> U64Target;
 
     fn not_u64(&mut self, a: U64Target) -> U64Target;
+    fn add_virtual_u64_target(&mut self) -> U64Target;
 }
 
 impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU64<F, D>
@@ -56,5 +57,9 @@ impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU64<F, D>
 
     fn not_u64(&mut self, a: U64Target) -> U64Target {
         U64Target([self.not_u32(a.0[0]), self.not_u32(a.0[1])])
+    }
+
+    fn add_virtual_u64_target(&mut self) -> U64Target {
+        U64Target([U32Target(self.add_virtual_target()),U32Target(self.add_virtual_target())])
     }
 }

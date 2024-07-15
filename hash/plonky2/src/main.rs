@@ -14,11 +14,6 @@ mod bench{
     }
 
     pub mod  keccak256{
-        pub mod theta;
-        pub mod rho;
-        pub mod pi;
-        pub mod iota;
-        pub mod chi;
         pub mod keccak;
     }
 }
