@@ -40,7 +40,7 @@ pub fn poseidon_bench(depth: usize) -> Result<()> {
     let hash = builder.hash_or_noop::<PoseidonHash>(initial.clone());
 
     // Public inputs are the initial value (provided below) and the result (which is generated).
-    builder.register_public_inputs(initial.clone().as_slice());
+    // builder.register_public_inputs(initial.clone().as_slice());
     builder.register_public_input(hash.elements[0]);
     builder.register_public_input(hash.elements[1]);
     builder.register_public_input(hash.elements[2]);

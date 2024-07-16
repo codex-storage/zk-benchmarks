@@ -3,8 +3,6 @@ mod bench{
     pub mod poseidon;
     pub mod sha256{
         pub mod constants;
-        pub mod shift;
-        pub mod rotate;
         pub mod sigma;
         pub mod sha;
         pub mod xor3;
@@ -56,7 +54,7 @@ fn main() {
 
         "sha256" => {
             println!("Running sha256: ");
-            let _ = sha256_bench();
+            let _ = sha256_bench(size);
         }
 
         _ => {

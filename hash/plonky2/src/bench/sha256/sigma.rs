@@ -1,35 +1,11 @@
-// use plonky2::{hash::hash_types::HashOutTarget, iop::target::Target, iop::target::BoolTarget};
-use plonky2::iop::target::BoolTarget;
-
 use plonky2::hash::hash_types::RichField;
 use plonky2::plonk::circuit_builder::CircuitBuilder;
-// use plonky2_field::extension;
 use plonky2::field::extension::Extendable;
 use plonky2_u32::gadgets::arithmetic_u32::U32Target;
-use super::shift::shift32;
-use super::rotate::rotate32;
+use crate::arithmetic::u32_arithmetic::{rotate32, shift32};
+use crate::arithmetic::u32_arithmetic::u32_to_bits_target;
+use crate::arithmetic::u32_arithmetic::bits_to_u32_target;
 use super::xor3::xor3;
-
-pub fn u32_to_bits_target<F: RichField + Extendable<D>, const D: usize, const B: usize>(
-    builder: &mut CircuitBuilder<F, D>,
-    a: &U32Target,
-) -> Vec<BoolTarget> {
-    let mut res = Vec::new();
-    let bit_targets = builder.split_le_base::<B>(a.0, 32);
-    for i in (0..32).rev() {
-        res.push(BoolTarget::new_unsafe(bit_targets[i]));
-    }
-    res
-}
-
-pub fn bits_to_u32_target<F: RichField + Extendable<D>, const D: usize>(
-    builder: &mut CircuitBuilder<F, D>,
-    bits_target: Vec<BoolTarget>,
-) -> U32Target {
-    let bit_len = bits_target.len();
-    assert_eq!(bit_len, 32);
-    U32Target(builder.le_sum(bits_target[0..32].iter().rev()))
-}
 
 pub fn sigma0<F: RichField + Extendable<D>, const D: usize>(
     builder: &mut CircuitBuilder<F, D>,

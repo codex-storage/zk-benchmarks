@@ -3,97 +3,59 @@ use plonky2::hash::hash_types::RichField;
 use plonky2::field::extension::Extendable;
 use plonky2::plonk::circuit_builder::CircuitBuilder;
 use plonky2_u32::gadgets::arithmetic_u32::U32Target;
-use super::binary_arithmetic::CircuitBuilderBoolTarget;
 use plonky2_u32::gadgets::arithmetic_u32::CircuitBuilderU32;
 
-//TODO: remove the dead codes later
-#[allow(dead_code)]
-pub trait CircuitBuilderU32M<F: RichField + Extendable<D>, const D: usize> {
-    // fn or_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
-    fn and_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
-    fn xor_u32(&mut self, a: U32Target, b: U32Target) -> U32Target;
-    // fn rotate_left_u32(&mut self, a: U32Target, n: u8) -> U32Target;
-
-    fn from_u32(&mut self, a: U32Target) -> Vec<BoolTarget>;
-    fn to_u32(&mut self, a: Vec<BoolTarget>) -> U32Target;
-
-    // not := 0xFFFFFFFF - x
-    fn not_u32(&mut self, a: U32Target) -> U32Target;
-        
+pub fn add_u32<F: RichField + Extendable<D>, const D: usize>(
+    builder: &mut CircuitBuilder<F, D>,
+    a: &U32Target,
+    b: &U32Target,
+) -> U32Target {
+    let (res, _carry) = builder.add_u32(*a, *b);
+    res
 }
 
-impl<F: RichField + Extendable<D>, const D: usize> CircuitBuilderU32M<F, D>
-    for CircuitBuilder<F, D>{
-
-        fn from_u32(&mut self, a: U32Target) -> Vec<BoolTarget> {
-
-            let mut res = Vec::new();
-            let bit_targets = self.split_le_base::<2>(a.0, 32);
-
-            for i in (0..32).rev() {
-                res.push(BoolTarget::new_unsafe(bit_targets[i]));
-            }
-            res
-        }
-
-        fn to_u32(&mut self, a: Vec<BoolTarget>) -> U32Target {
-            let bit_len = a.len();
-            assert_eq!(bit_len, 32);
-            U32Target(self.le_sum(a[0..32].iter().rev()))
-        }
-
-
-        // fn or_u32(&mut self, a: U32Target, b: U32Target) -> U32Target {
-        //     let binary_target_a = self.from_u32(a);
-        //     let binary_target_b = self.from_u32(b);
-
-        //     let mut res = Vec::<BoolTarget>::new();
-        //     for i in 0..32 {
-
-        //         let r = self.or(binary_target_a[i], binary_target_b[i]);
-        //         res.push(r);
-        //     }
-        //     self.to_u32(res)
-        // }
-
-        fn and_u32(&mut self, a: U32Target, b: U32Target) -> U32Target {
-            let binary_target_a = self.from_u32(a);
-            let binary_target_b = self.from_u32(b);
-
-            let mut res = Vec::<BoolTarget>::new();
-            for i in 0..32 {
-
-                let r = self.and(binary_target_a[i], binary_target_b[i]);
-                res.push(r);
-            }
-            self.to_u32(res)
-
-        }
-
-        fn xor_u32(&mut self, a: U32Target, b: U32Target) -> U32Target {
-            let binary_target_a = self.from_u32(a);
-            let binary_target_b = self.from_u32(b);
-
-            let mut res = Vec::<BoolTarget>::new();
-            for i in 0..32 {
-
-                let r = self.xor(binary_target_a[i], binary_target_b[i]);
-                res.push(r);
-            }
-            self.to_u32(res)
-        }
-
-        // fn rotate_left_u32(&mut self, a: U32Target, n: u8) -> U32Target {
-        //     let two_power_n = self.constant_u32(0x1 << n);
-        //     let (lo, hi) = self.mul_u32(a, two_power_n);
-        //     self.add_u32(lo, hi).0
-        // }
-
-        // not := 0xFFFFFFFF - x
-        fn not_u32(&mut self, a: U32Target) -> U32Target {
-            let zero = self.zero_u32();
-            let ff = self.constant_u32(0xFFFFFFFF);
-            self.sub_u32(ff, a, zero).0
-        }
-
+pub fn u32_to_bits_target<F: RichField + Extendable<D>, const D: usize, const B: usize>(
+    builder: &mut CircuitBuilder<F, D>,
+    a: &U32Target,
+) -> Vec<BoolTarget> {
+    let mut res = Vec::new();
+    let bit_targets = builder.split_le_base::<B>(a.0, 32);
+    for i in (0..32).rev() {
+        res.push(BoolTarget::new_unsafe(bit_targets[i]));
     }
+    res
+}
+
+pub fn bits_to_u32_target<F: RichField + Extendable<D>, const D: usize>(
+    builder: &mut CircuitBuilder<F, D>,
+    bits_target: Vec<BoolTarget>,
+) -> U32Target {
+    let bit_len = bits_target.len();
+    assert_eq!(bit_len, 32);
+    U32Target(builder.le_sum(bits_target[0..32].iter().rev()))
+}
+
+// x>>y
+// Assume: 0 at index 32
+pub fn shift32(y: usize) -> Vec<usize> {
+    let mut res = Vec::new();
+    for _ in 32 - y..32 {
+        res.push(32);
+    }
+    for i in 0..32 - y {
+        res.push(i);
+    }
+    res
+}
+
+// define ROTATE(x, y)  (((x)>>(y)) | ((x)<<(32-(y))))
+pub fn rotate32(y: usize) -> Vec<usize> {
+    let mut res = Vec::new();
+    for i in 32 - y..32 {
+        res.push(i);
+    }
+    for i in 0..32 - y {
+        res.push(i);
+    }
+    res
+}

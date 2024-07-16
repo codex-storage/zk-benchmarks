@@ -1,3 +1,5 @@
+// code is taken from https://github.com/polymerdao/plonky2-sha256
+
 use plonky2::iop::target::BoolTarget;
 use plonky2::hash::hash_types::RichField;
 use plonky2::plonk::circuit_builder::CircuitBuilder;
@@ -16,15 +18,8 @@ use super::sigma::sigma1;
 use super::maj::maj;
 use super::constants::*;
 use super::ch::ch;
-
-fn add_u32<F: RichField + Extendable<D>, const D: usize>(
-    builder: &mut CircuitBuilder<F, D>,
-    a: &U32Target,
-    b: &U32Target,
-) -> U32Target {
-    let (res, _carry) = builder.add_u32(*a, *b);
-    res
-}
+use crate::arithmetic::u32_arithmetic::add_u32;
+use rand::Rng;
 
 pub struct Sha256Targets {
     pub message: Vec<BoolTarget>,
@@ -179,19 +174,18 @@ pub fn make_circuits<F: RichField + Extendable<D>, const D: usize>(
 }
 
 
-fn generate_random_bytes() -> Vec<u8> {
-    const MSG_SIZE: usize = 64;
-    let mut msg = vec![0; MSG_SIZE as usize];
-    for i in 0..MSG_SIZE - 1 {
-        msg[i] = i as u8;
-    }
+fn generate_random_bytes(size: usize) -> Vec<u8> {
+    
+    let mut rng = rand::thread_rng();
+    let mut bytes = vec![0u8; size];
+    rng.fill(&mut bytes[..]);
 
-    msg
+    bytes
     
 }
 
-pub fn sha256_bench() -> Result<()> {
-    let msg = generate_random_bytes();
+pub fn sha256_bench(size: usize) -> Result<()> {
+    let msg = generate_random_bytes(size);
 
     let mut hasher = Sha256::new();
     hasher.update(msg.clone());
@@ -221,7 +215,7 @@ pub fn sha256_bench() -> Result<()> {
     }
 
     println!(
-        "Constructing inner proof with {} gates",
+        "number of gates: {}",
         builder.num_gates()
     );
     let data = builder.build::<C>();

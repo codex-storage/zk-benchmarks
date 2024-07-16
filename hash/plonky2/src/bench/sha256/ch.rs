@@ -1,13 +1,10 @@
-// use plonky2::{hash::hash_types::HashOutTarget, iop::target::Target, iop::target::BoolTarget};
 use plonky2::iop::target::BoolTarget;
-
 use plonky2::hash::hash_types::RichField;
 use plonky2::plonk::circuit_builder::CircuitBuilder;
-// use plonky2_field::extension;
 use plonky2::field::extension::Extendable;
 use plonky2_u32::gadgets::arithmetic_u32::U32Target;
-use super::sigma::bits_to_u32_target;
-use super::sigma::u32_to_bits_target;
+use crate::arithmetic::u32_arithmetic::{bits_to_u32_target, u32_to_bits_target};
+
 
 pub fn ch<F: RichField + Extendable<D>, const D: usize>(
     builder: &mut CircuitBuilder<F, D>,
