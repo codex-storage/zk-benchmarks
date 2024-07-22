@@ -1,3 +1,4 @@
+
 use std::process;
 mod bench{
     pub mod poseidon;
@@ -13,7 +14,7 @@ mod bench{
 
     pub mod  keccak256{
         pub mod keccak;
-        // pub mod keccak_polygon;
+        pub mod keccak_polygon;
     }
 }
 
@@ -26,6 +27,8 @@ mod arithmetic {
 use bench::poseidon::poseidon_bench;
 use bench::keccak256::keccak::keccak_bench;
 use bench::sha256::sha::sha256_bench;
+use bench::keccak256::keccak_polygon::keccak_polygon_bench;
+
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -52,6 +55,13 @@ fn main() {
             eprintln!("input size: {:?}", size);
             let _ = keccak_bench(size);
         }
+
+        "keccak-polygon" => {
+            println!("Running keccak of plolygon zk_evm: ");
+            eprintln!("number of permutation: {:?}", size);
+            let _ = keccak_polygon_bench(size);
+        }
+
 
         "sha256" => {
             println!("Running sha256: ");

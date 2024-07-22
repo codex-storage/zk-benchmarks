@@ -8,14 +8,14 @@ edition = "2021"
 [dependencies]
 
 # TODO: This can be later changed to original github
-plonky2_u32 ={ git = "https://github.com/man2706kum/plonky2-u32.git"}
+plonky2_u32 ={ git = "https://github.com/hashcloak/plonky2-u32.git"}
 plonky2 = "0.2.2"
 rand = "0.8.5"
 anyhow = "1.0.86"
 sha2 = "0.10"
 tiny-keccak={version="2.0.2", features=["keccak"]}
 hex="0.4.3"
-evm_arithmetization ={ git = "https://github.com/0xPolygonZero/zk_evm.git", rev = "a5b92b2b2bcc7bbf8725190aaa0fba7007e51a6a"}
-starky ={ git = "https://github.com/0xPolygonZero/plonky2.git", rev = "0e363e16a37a2eacd3349946bd071a460485ad26"}
+evm_arithmetization ={ path = "../external/zk_evm/evm_arithmetization" }
+starky = "0.4.0"
 env_logger = "0.11.3"
 log = "0.4.21"

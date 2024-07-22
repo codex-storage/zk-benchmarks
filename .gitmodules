@@ -16,3 +16,6 @@
 [submodule "hash/risc0/external/risc0"]
 	path = hash/risc0/external/risc0
 	url = https://github.com/risc0/risc0.git
+[submodule "hash/plonky2/external/zk_evm"]
+	path = hash/plonky2/external/zk_evm
+	url = https://github.com/hashcloak/zk_evm.git
