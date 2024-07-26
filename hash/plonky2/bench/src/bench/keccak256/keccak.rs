@@ -1,7 +1,6 @@
 // code taken from https://github.com/qope/plonky2-keccak256/tree/main
 
 use std::marker::PhantomData;
-
 use plonky2::{
     field::extension::Extendable,
     hash::hash_types::RichField,
@@ -9,19 +8,21 @@ use plonky2::{
         target::BoolTarget,
         witness::{PartialWitness, WitnessWrite},
     },
-    plonk::circuit_builder::CircuitBuilder,
+    plonk::{
+        circuit_builder::CircuitBuilder,
+        circuit_data::CircuitConfig,
+        config::PoseidonGoldilocksConfig,
+    },
     field::goldilocks_field::GoldilocksField,
 };
 use std::time::Instant;
 use rand::Rng;
-use tiny_keccak::Keccak;
-use tiny_keccak::Hasher;
-use plonky2::plonk::circuit_data::CircuitConfig;
-use plonky2::plonk::config::PoseidonGoldilocksConfig;
+use tiny_keccak::{Keccak,Hasher};
 use anyhow::Result;
-
-use crate::arithmetic::binary_arithmetic::xor_circuit;
-use crate::arithmetic::u64_arithmetic::U64Target;
+use crate::arithmetic::{
+    binary_arithmetic::xor_circuit,
+    u64_arithmetic::U64Target
+};
 
 pub const ROUND_CONSTANTS: [u64; 24] = [
     1u64,

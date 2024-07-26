@@ -1,28 +1,29 @@
-use evm_arithmetization::keccak::keccak_stark::KeccakStark;
+use evm_arithmetization::{
+    keccak::keccak_stark::KeccakStark,
+    prover::prove_single_table,
+    StarkConfig
+};
 use anyhow::Result;
-use plonky2::fri::oracle::PolynomialBatch;
-use plonky2::iop::challenger::Challenger;
-use plonky2::plonk::config::{GenericConfig, PoseidonGoldilocksConfig};
-use starky::cross_table_lookup::{CtlData, CtlZData};
-use starky::lookup::{GrandProductChallenge, GrandProductChallengeSet};
-use plonky2::field::polynomial::PolynomialValues;
-use plonky2::field::types::Field;
-use plonky2::timed;
-// use evm_arithmetization::testing_utils::init_logger;
-use plonky2::util::timing::TimingTree;
-use evm_arithmetization::prover::prove_single_table;
-use starky::lookup::Filter;
-use starky::lookup::Column;
-use evm_arithmetization::StarkConfig;
-// use starky::verifier::verify_stark_proof;
-// use starky::prover::prove;
-use env_logger::DEFAULT_FILTER_ENV;
-use env_logger::Env;
-use env_logger::try_init_from_env;
+use plonky2::{
+    fri::oracle::PolynomialBatch,
+    iop::challenger::Challenger,
+    plonk::config::{GenericConfig, PoseidonGoldilocksConfig},
+    field::polynomial::PolynomialValues,
+    field::types::Field,
+    timed,
+    util::timing::TimingTree,
+};
+use starky::{
+    cross_table_lookup::{CtlData, CtlZData},
+    lookup::{GrandProductChallenge, GrandProductChallengeSet},
+    lookup::{Filter,Column},
+};
 
-// use evm_arithmetization::prover::prove;
-// use evm_arithmetization::generation::generate_traces;
-// use evm_arithmetization::AllStark;
+use env_logger::{
+    DEFAULT_FILTER_ENV,
+    Env,
+    try_init_from_env
+};
 
 const NUM_INPUTS: usize = 25;
 

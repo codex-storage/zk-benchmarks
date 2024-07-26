@@ -1,12 +1,13 @@
 use anyhow::Result;
-use plonky2::field::types::Field;
-use plonky2::field::goldilocks_field::GoldilocksField;
-
-use plonky2::hash::poseidon::PoseidonHash;
-use plonky2::iop::witness::{PartialWitness, WitnessWrite};
-use plonky2::plonk::circuit_builder::CircuitBuilder;
-use plonky2::plonk::circuit_data::CircuitConfig;
-use plonky2::plonk::config::{GenericConfig, PoseidonGoldilocksConfig};
+use plonky2::{
+    field::types::Field,
+    field::goldilocks_field::GoldilocksField,
+    hash::poseidon::PoseidonHash,
+    iop::witness::{PartialWitness, WitnessWrite},
+    plonk::circuit_builder::CircuitBuilder,
+    plonk::circuit_data::CircuitConfig,
+    plonk::config::{GenericConfig, PoseidonGoldilocksConfig},
+};
 use rand::Rng;
 use std::time;
 
