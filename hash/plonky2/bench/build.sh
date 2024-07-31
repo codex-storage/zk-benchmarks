@@ -4,5 +4,7 @@
 rustup override set nightly
 
 # Build 
-cargo build
+# RUSTFLAGS=-Ctarget-cpu=native cargo build
+RUSTFLAGS=-Ctarget-cpu=native cargo build --release --bin plonky2_hash_benchmarks
+
 

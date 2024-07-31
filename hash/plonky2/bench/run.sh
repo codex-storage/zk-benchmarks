@@ -12,4 +12,4 @@ echo "HASH            = $ZKBENCH_HASH_TYPE"
 echo "Input Size (Bytes) = $ZKBENCH_INPUT_SIZE_BYTES"
 
 # Run the benchmarks
-./target/debug/plonky2_hash_benchmarks $ZKBENCH_HASH_TYPE $ZKBENCH_INPUT_SIZE_BYTES
+./target/release/plonky2_hash_benchmarks $ZKBENCH_HASH_TYPE $ZKBENCH_INPUT_SIZE_BYTES

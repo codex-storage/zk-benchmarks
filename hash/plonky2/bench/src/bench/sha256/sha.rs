@@ -227,6 +227,7 @@ pub fn sha256_bench(size: usize) -> Result<()> {
         let end = start.elapsed();
         (end, proof)
     };
+    let proof_size = proof.to_bytes().len();
     
     let (verification_time, res) = {
         let start = std::time::Instant::now();
@@ -237,6 +238,7 @@ pub fn sha256_bench(size: usize) -> Result<()> {
 
     eprintln!("Proof Generation Time: {:?}", proof_time);
     eprintln!("Verification Time: {:?}", verification_time);
+    eprintln!("Proof size: {:?}", proof_size);
     
     res
 

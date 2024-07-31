@@ -251,23 +251,28 @@ pub fn keccak_bench(size: usize) -> Result<()>{
     for i in 0..256 {
         pw.set_bool_target(output_t[i], exptected_output_bits[i]);
     }
-
-    println!("circuit size: {:?}", builder.num_gates());
+    let circuit_size = builder.num_gates();
+    
     let data = builder.build::<C>();
-    let now = Instant::now();
-    let proof = data.prove(pw)?;
 
-    println!("time = {:?}", now.elapsed());
-    println!(
-        "degree = {}, degree_bits= {}",
-        data.common.degree(),
-        data.common.degree_bits()
-    );
+    let (proof_generation_time, proof) = {
+        let now = Instant::now();
+        let proof = data.prove(pw)?;
+        (now.elapsed(), proof)
+    };
+    let proof_size = proof.to_bytes().len();
+    let (verification_time, verification_result) = {
+        let now = Instant::now();
+        let res = data.verify(proof);
+        (now.elapsed(), res)
+    };
+    
+    eprintln!("circuit size: {}", circuit_size);
+    eprintln!("proof generation time: {:?}", proof_generation_time);
+    eprintln!("verification time: {:?}", verification_time);
+    eprintln!("proof size: {:?}", proof_size);
 
-    data.verify(proof)?;
-    Ok(())
-
-
+    verification_result
 }
 
 fn generate_data(size: usize) -> Vec<u8> {
