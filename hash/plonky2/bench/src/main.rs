@@ -58,7 +58,6 @@ fn main() {
 
         "keccak-polygon" => {
             println!("Running keccak of plolygon zk_evm: ");
-            eprintln!("number of permutation: {:?}", size);
             let _ = keccak_polygon_bench(size);
         }
 

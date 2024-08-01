@@ -1,10 +1,10 @@
 #!/bin/bash
 if [ -z ${ZKBENCH_HASH_TYPE} ]; then 
-ZKBENCH_HASH_TYPE="poseidon"    
+ZKBENCH_HASH_TYPE="sha256"    
 fi
 
 if [ -z ${ZKBENCH_INPUT_SIZE_BYTES} ]; then 
-ZKBENCH_INPUT_SIZE_BYTES=4
+ZKBENCH_INPUT_SIZE_BYTES=256
 fi
 
 echo "Running benchmarks with the following configurations:"
