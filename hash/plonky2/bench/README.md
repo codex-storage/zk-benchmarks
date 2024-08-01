@@ -1,0 +1,11 @@
+Plonky2 Hash Circuit Benchmarking
+--------------------------------
+- The `plonky2/bench` contains the following hash circuit benchamrking code: sha256, keccak256 and poseidon.
+- The code for sha256 is taken from [plonky2-sha256](https://github.com/polymerdao/plonky2-sha256).
+- The keccak hash has two different implementation taken from [plonky2-keccak256](https://github.com/qope/plonky2-keccak256) and Polygon-zero [zk_evm](https://github.com/0xPolygonZero/zk_evm/tree/develop).
+- The `build.sh` script builds the whole code. You need rust nightly version to build the code. The script overrides the default rust version to nightly.
+- `run.sh` and `run_tree.sh` runs the benchmark. (`run.sh` for sha256, keccak, and keccak-polygon and `run_tree.sh` for poseidon)
+- Benchmarks can be parameterized using environment variables. By convention, we start the names of these environment variables with the `ZKBENCH_` prefix.
+- By default the `run.sh` will run the sha256 benchmark over 256 Bytes of data. other hashes can be run by settig the environment variables accordingly.
+- By default the `run_tree.sh` will run the poseidon benchmark over tree depth 4.
+- Additional files `bench.cfg` and `bench_tree.cfg` specifies the configurations and parameters.
