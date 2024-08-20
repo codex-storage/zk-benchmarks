@@ -15,6 +15,8 @@ lto = "fat"
 jolt = { package = "jolt-sdk", git = "https://github.com/a16z/jolt",rev = "4805d038f7b6e7ca5e7ef64aefa62213aecac01a", features = ["host"] }
 guest = { path = "./guest" }
 rand = "0.8.3"
+hex = "0.4.3"
+ark-serialize = "0.4.2"
 
 [patch.crates-io]
 ark-ff = { git = "https://github.com/a16z/arkworks-algebra", branch = "optimize/field-from-u64" }

@@ -1,4 +1,11 @@
 use rand::Rng;
+use std::process;
+
+mod benches;
+use benches::{
+    sha2::sha2_bench,
+    sha3::sha3_bench,
+};
 
 fn generate_bytes(size: usize) -> Vec<u8> {
     let mut rng = rand::thread_rng();
@@ -6,22 +13,38 @@ fn generate_bytes(size: usize) -> Vec<u8> {
 }
 
 pub fn main() {
-    let (prove_sha2, verify_sha2) = guest::build_sha2();
-    let (prove_sha3, verify_sha3) = guest::build_sha3();
 
-    // random data
-    let binding = generate_bytes(1024);
-    let input = binding.as_slice();
+    let args: Vec<String> = std::env::args().collect();
 
-    let (output, proof) = prove_sha2(input);
-    let is_valid = verify_sha2(proof);
+    if args.len() != 3 {
+        println!("Wrong number of arguments! The program expects two arguments: <hash_type> and <size>");
+        // Exit the program with a non-zero exit code
+        process::exit(1);
+    }
+    
+    let hash_type = &args[1];
+    let size = args[2].parse::<usize>().unwrap();
 
-    println!("sha2 output: {:?}", output);
-    println!("sha2 valid: {}", is_valid);
-
-    let (output, proof) = prove_sha3(input);
-    let is_valid = verify_sha3(proof);
-
-    println!("sha3 output: {:?}", output);
-    println!("sha3 valid: {}", is_valid);
+        match hash_type.as_str() {
+            "sha256" => {
+                println!("SHA256 Benchmarking: ");
+                eprintln!("data size(bytes): {:?}", size);
+                let input = generate_bytes(size);
+                sha2_bench(input.clone());
+            }
+            
+            "keccak" => {
+                println!("KECCAK Benchmarking: ");
+                eprintln!("data size(bytes): {:?}", size);
+                let input = generate_bytes(size);
+                sha3_bench(input.clone());
+            }
+    
+            _ => {
+                println!("Wrong Benchmark Name!");
+            }
+        }
+    
+        println!("All Done!");
+    
 }
