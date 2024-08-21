@@ -5,6 +5,8 @@ mod benches;
 use benches::{
     sha2::sha2_bench,
     sha3::sha3_bench,
+    blake3::blake3_bench,
+    blake2::blake2_bench,
 };
 
 fn generate_bytes(size: usize) -> Vec<u8> {
@@ -27,17 +29,31 @@ pub fn main() {
 
         match hash_type.as_str() {
             "sha256" => {
-                println!("SHA256 Benchmarking: ");
+                println!("sha256 Benchmarking: ");
                 eprintln!("data size(bytes): {:?}", size);
                 let input = generate_bytes(size);
                 sha2_bench(input.clone());
             }
             
             "keccak" => {
-                println!("KECCAK Benchmarking: ");
+                println!("keccak Benchmarking: ");
                 eprintln!("data size(bytes): {:?}", size);
                 let input = generate_bytes(size);
                 sha3_bench(input.clone());
+            }
+
+            "blake3" => {
+                println!("blake3 Benchmarking: ");
+                eprintln!("data size(bytes): {:?}", size);
+                let input = generate_bytes(size);
+                blake3_bench(input.clone());
+            }
+
+            "blake2" => {
+                println!("blake2 Benchmarking: ");
+                eprintln!("data size(bytes): {:?}", size);
+                let input = generate_bytes(size);
+                blake2_bench(input.clone());
             }
     
             _ => {

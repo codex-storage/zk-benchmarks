@@ -3,9 +3,9 @@ name = "guest"
 version = "0.1.0"
 edition = "2021"
 
-[[bin]]
-name = "guest"
-path = "./src/lib.rs"
+# [[bin]]
+# name = "guest"
+# path = "./src/lib.rs"
 
 [features]
 guest = []
@@ -14,3 +14,5 @@ guest = []
 jolt = { package = "jolt-sdk", git = "https://github.com/a16z/jolt", rev = "4805d038f7b6e7ca5e7ef64aefa62213aecac01a"}
 sha2 = { version = "0.10.8", default-features = false }
 sha3 = { version = "0.10.8", default-features = false }
+blake3 = { version = "1.5.4", default-features = false }
+blake2 = { version = "0.10.6", default-features = false }
