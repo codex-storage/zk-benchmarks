@@ -7,6 +7,7 @@ use benches::{
     sha3::sha3_bench,
     blake3::blake3_bench,
     blake2::blake2_bench,
+    poseidon2_babybear::poseidon2_babybear_bench,
 };
 
 fn generate_bytes(size: usize) -> Vec<u8> {
@@ -54,6 +55,14 @@ pub fn main() {
                 eprintln!("data size(bytes): {:?}", size);
                 let input = generate_bytes(size);
                 blake2_bench(input.clone());
+            }
+
+            "poseidon2_babybear" => {
+                println!("poseidon2_babybear Benchmarking: ");
+                eprintln!("Tree Depth: {:?}", size);
+                eprintln!("number of inputs {:?}",  (1 << size) * 8);
+                
+                poseidon2_babybear_bench(size);
             }
     
             _ => {
