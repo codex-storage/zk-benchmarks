@@ -8,12 +8,12 @@ use alloc::vec::Vec;
 pub fn poseidon2_babybear_bench(mt_depth: usize) {
 
     let t = (1 << mt_depth) * 8;
-    let mut input: Vec<u8> = Vec::new();
+    let mut input: Vec<u32> = Vec::new();
 
     for _ in 0..t {
         
         let mut rng = rand::thread_rng();
-        let random_u32: u8 = rng.gen();
+        let random_u32: u32 = rng.gen();
         input.push(random_u32);
     }
 
@@ -29,7 +29,7 @@ pub fn poseidon2_babybear_bench(mt_depth: usize) {
     let (output, proof, proving_time) = {
 
         let start = Instant::now();
-        let (output, proof) = prove_poseidon2_babybear(input.as_slice());
+        let (output, proof) = prove_poseidon2_babybear(input);
         let elapsed = start.elapsed();
 
         (output, proof, elapsed)
@@ -47,8 +47,13 @@ pub fn poseidon2_babybear_bench(mt_depth: usize) {
         (is_valid, elapsed)
     };
 
+    let mut output_bytes: Vec<u8> = Vec::new();
+    for i in 0..8 {
+        output_bytes.extend_from_slice(output[i].to_be_bytes().as_slice());
+    }
+    
     assert!(is_valid);
-    println!("output: {:?}", hex::encode(output));
+    println!("output: {:?}", hex::encode(&output_bytes));
     println!("guest build time: {:?}", guest_build_time);
     println!("proving time: {:?}", proving_time);
     println!("verification time: {:?}", verification_time);
