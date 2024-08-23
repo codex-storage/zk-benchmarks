@@ -8,6 +8,7 @@ use benches::{
     blake3::blake3_bench,
     blake2::blake2_bench,
     poseidon2_babybear::poseidon2_babybear_bench,
+    poseidon2_bn256::poseidon2_bn256_bench,
 };
 
 fn generate_bytes(size: usize) -> Vec<u8> {
@@ -63,6 +64,14 @@ pub fn main() {
                 eprintln!("number of inputs {:?}",  (1 << size) * 8);
                 
                 poseidon2_babybear_bench(size);
+            }
+
+            "poseidon2_bn256" => {
+                println!("poseidon2_bn256 Benchmarking: ");
+                eprintln!("Tree Depth: {:?}", size);
+                eprintln!("number of inputs {:?}",  (1 << size));
+                
+                poseidon2_bn256_bench(size);
             }
     
             _ => {

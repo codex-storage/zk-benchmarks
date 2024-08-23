@@ -3,3 +3,4 @@ pub mod sha3;
 pub mod blake3;
 pub mod blake2;
 pub mod poseidon2_babybear;
+pub mod poseidon2_bn256;

@@ -5,12 +5,16 @@ use sha2::{Sha256, Digest};
 use sha3::Keccak256;
 use blake3::hash;
 use blake2::Blake2b512;
+use ark_serialize::{CanonicalSerialize,CanonicalDeserialize};
 
 use risc0_zkp::core::hash::poseidon2::Poseidon2HashSuite;
 use risc0_zkp::field::baby_bear::BabyBearElem;
 
 extern crate alloc;
 use alloc::vec::Vec;
+
+pub mod poseidon2_bn256;
+use poseidon2_bn256::{Scalar, MerkleTree, Poseidon2, Poseidon2Params};
 
 // sha256
 #[jolt::provable]
@@ -63,3 +67,26 @@ fn poseidon2_babybear(input: Vec<u32>) -> Vec<u32> {
     result
     
 }
+
+//TODO: too slow!! need to do some optimizations
+// poseidon2 over BN256
+#[jolt::provable(stack_size = 1000000, memory_size = 10000000)]
+pub fn poseidon2_bn256(input: Vec<Vec<u8>>) -> Vec<u8> {
+    let mut hash_data: Vec<Scalar> = Vec::new();
+    for i in 0..input.len() {
+        let a_uncompressed = Scalar::deserialize_uncompressed(&*input[i]).unwrap();
+        hash_data.push(a_uncompressed);
+    }
+
+    let bn256_param: Poseidon2Params<Scalar> = Poseidon2Params::<Scalar>::POSEIDON2_BN256_PARAMS();
+    let permutation = Poseidon2::new(bn256_param);
+    let mut merkle_tree = MerkleTree::new(permutation);
+
+    let hash_final = merkle_tree.accumulate(&hash_data);
+
+    let mut hash_bytes: Vec<u8> = Vec::new();
+    hash_final.serialize_uncompressed(&mut hash_bytes).unwrap();
+    
+    hash_bytes
+}
+

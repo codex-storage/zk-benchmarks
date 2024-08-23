@@ -485,7 +485,10 @@ checksum = "8c3c1a368f70d6cf7302d78f8f7093da241fb8e8807c05cc9e51a125895a6d5b"
 name = "bench"
 version = "0.1.0"
 dependencies = [
+ "ark-bn254",
+ "ark-ff 0.4.2",
  "ark-serialize 0.4.2",
+ "ark-std 0.4.0",
  "guest",
  "hex",
  "jolt-sdk",
@@ -1299,10 +1302,13 @@ dependencies = [
 name = "guest"
 version = "0.1.0"
 dependencies = [
+ "ark-bn254",
+ "ark-ff 0.4.2",
+ "ark-serialize 0.4.2",
  "blake2",
  "blake3",
+ "hex",
  "jolt-sdk",
- "risc0-core 0.18.0",
  "risc0-zkp",
  "sha2",
  "sha3",
@@ -2515,16 +2521,6 @@ dependencies = [
 
 [[package]]
 name = "risc0-core"
-version = "0.18.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08605aec93ea22ed83f7f81f42e2d7287a5b0c749d8671f94de9d5994020045c"
-dependencies = [
- "bytemuck",
- "rand_core 0.6.4",
-]
-
-[[package]]
-name = "risc0-core"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "047cc26c68c092d664ded7488dcac0462d9e31190e1598a7820fe4246d313583"
@@ -2548,7 +2544,7 @@ dependencies = [
  "hex-literal",
  "paste",
  "rand_core 0.6.4",
- "risc0-core 1.0.5",
+ "risc0-core",
  "risc0-zkvm-platform",
  "serde",
  "sha2",
