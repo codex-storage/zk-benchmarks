@@ -68,7 +68,6 @@ fn poseidon2_babybear(input: Vec<u32>) -> Vec<u32> {
     
 }
 
-//TODO: too slow!! need to do some optimizations
 // poseidon2 over BN256
 #[jolt::provable(stack_size = 1000000, memory_size = 10000000)]
 pub fn poseidon2_bn256(input: Vec<Vec<u8>>) -> Vec<u8> {

@@ -9,7 +9,7 @@ use alloc::vec::Vec;
 extern crate core;
 use core::marker::PhantomData;
 
-pub type Scalar = ark_bn254::fr::Fr;
+pub type Scalar = ark_bn254::Fr;
 
 #[derive(Clone, Debug)]
 pub struct Poseidon2Params<F: PrimeField> {
@@ -633,5 +633,6 @@ impl<F: PrimeField> MerkleTreeHash<F> for Poseidon2<F> {
 
 pub fn from_hex<F: PrimeField>(s: &str) -> F {
     let a = Vec::from_hex(&s[2..]).expect("Invalid Hex String");
+
     F::from_be_bytes_mod_order(&a as &[u8])
 }
