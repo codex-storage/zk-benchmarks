@@ -296,6 +296,32 @@ void permutation_example() {
 }
 
 // -----------------------------------------------------------------------------
+// * single-threaded iterated permutation
+
+void permutation_iterated(int n) {
+  uint64_t state[3*NLIMBS];
+  uint64_t tgt  [3*NLIMBS];
+
+  bn128_r_mont_from_std( example_input_std            , state            );
+  bn128_r_mont_from_std( example_input_std +   NLIMBS , state +   NLIMBS );
+  bn128_r_mont_from_std( example_input_std + 2*NLIMBS , state + 2*NLIMBS );
+
+  for(int i=0; i<n; i++) {
+    poseidon_perm_mont( state, state );
+  }
+
+  bn128_r_mont_to_std( state            , tgt            );
+  bn128_r_mont_to_std( state +   NLIMBS , tgt +   NLIMBS );
+  bn128_r_mont_to_std( state + 2*NLIMBS , tgt + 2*NLIMBS );
+
+  printf("\npermutation of (0,1,2) iterated %d times in F^3:\n",n);
+  print_std( "  x = ", tgt            );
+  print_std( "  y = ", tgt +   NLIMBS );
+  print_std( "  z = ", tgt + 2*NLIMBS );
+
+}
+
+// -----------------------------------------------------------------------------
 // * single-threaded Merkle tree
 
 void merkle_root_example(int n) {
@@ -394,7 +420,6 @@ int main( int argc, char *argv[] ) {
   
   int nThreads = 1;
   int mtDepth  = 16;
-
   switch(argc) {
 
     case 2:
@@ -406,20 +431,29 @@ int main( int argc, char *argv[] ) {
       nThreads = atoi(argv[2]);
       break;
 
+
     default:
       printf("usage:\n");
       printf("$ poseidon2 <merkle_depth>:\n");
       printf("$ poseidon2 <merkle_depth> <nthreads>:\n");
+      printf("$ poseidon2 <n_iters>:\n");
       exit(-1);
       break;
   }
 
-  printf("calculating Poseidon2 Merkle root with depth=%d on %d threads...\n",mtDepth,nThreads);
-  if (nThreads == 1) {
-    merkle_root_example(mtDepth);
+  if (mtDepth < 32) {
+    printf("calculating Poseidon2 Merkle root with depth=%d on %d threads...\n",mtDepth,nThreads);
+    if (nThreads == 1) {
+      merkle_root_example(mtDepth);
+    }
+    else {
+      merkle_root_multithread(mtDepth, nThreads);    
+    }
   }
   else {
-    merkle_root_multithread(mtDepth, nThreads);    
+    int nIters = mtDepth;
+    printf("calculating Poseidon2 permutation iterated %d times on 1 threads...\n",nIters);
+    permutation_iterated(nIters); 
   }
 
   printf("\n");
