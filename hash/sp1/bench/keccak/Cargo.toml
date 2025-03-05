@@ -1,0 +1,9 @@
+[workspace]
+[package]
+version = "0.1.0"
+name = "keccak-program"
+edition = "2021"
+
+[dependencies]
+sp1-zkvm = { git = "https://github.com/succinctlabs/sp1.git", rev = "4528b7861c60ef5e25c2d0b328fc6d244e2ac98e" }
+tiny-keccak = { git = "https://github.com/succinctlabs/tiny-keccak-private", branch = "patch-v2.0.2", features = ["keccak"] }
