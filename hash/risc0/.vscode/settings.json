@@ -1,0 +1,5 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "./bench/methods/guest/Cargo.toml"
+    ]
+}

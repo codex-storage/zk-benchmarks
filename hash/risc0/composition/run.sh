@@ -1,0 +1,1 @@
+RUST_LOG=info ./target/release/composition 1024

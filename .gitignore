@@ -2,3 +2,4 @@
 build
 target
 a.out
+Cargo.lock
